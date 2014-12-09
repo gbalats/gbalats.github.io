@@ -68,156 +68,168 @@ hr {
 /* MENU CONF */
 
 .menu {
-	position: fixed;
+    position: fixed;
     left: 0px;
-	width: 260px;
-	height: 100%;
-	top: 0;
-	z-index: 10;
-	text-align: left;
+    width: 310px;
+    height: 100%;
+    top: 0;
+    z-index: 10;
+    text-align: left;
 }
 
 .menu.menu-close {
-    left: -200px;
+    left: -250px;
 }
 
 .menu-wrap {
-	position: absolute;
-	top: 0;
-	right: 60px;
-	background: #1a1a1a;
-	width: 200px;
-	height: 100%;
+    position: absolute;
+    top: 0;
+    right: 60px;
+    background: #1a1a1a;
+    width: 250px;
+    height: 100%;
+}
+
+.menu-wrap > a {
+    padding-left: 10px;
 }
 
 .menu h1.logo a {
-	font-family: 'Oswald', sans-serif;
-	font-size: 16px;
-	font-weight: 700;
-	letter-spacing: 0.15em;
-	line-height: 40px;
-	text-transform: uppercase;
-	color: #ffffff;
-	margin-top: 20px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    line-height: 40px;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin-top: 20px;
 }
 
 .menu h1.logo a:hover {
-	color: #f85c37;
+    color: #f85c37;
 }
 
 .menu img.logo {
-	margin: 20px 0;
-	max-width: 160px;
+    margin: 20px 0;
+    max-width: 160px;
 }
 
 .menu a {
-	margin-left: 20px;
-	color: #808080;
-	display: block;
-	font-size: 12px;
-	font-weight: 700;
-	line-height: 40px;
-	letter-spacing: 0.1em;
-	text-transform: uppercase;
+    margin-left: 20px;
+    color: #808080;
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 40px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
 }
 
 .menu a:hover {
-	color: #ffffff;
+    color: #ffffff;
 }
 
 .menu a:active {
-	color: #ffffff;
+    color: #ffffff;
 }
 
 .menu a > i {
-	float: left;
-	display: inline-block;
-	vertical-align: middle;
-	text-align: left;
-	width: 25px;
-	font-size: 14px;
-	line-height: 40px;
-	margin: 25px 2px;
+    float: left;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+    width: 25px;
+    font-size: 14px;
+    line-height: 40px;
+    margin: 25px 2px;
 }
 
+
+/* Close menu button */
+
 .menu-close-btn {
-	cursor: pointer;
-	display: block;
-	position: absolute;
-	font-size: 14px;
-	color: #808080;
-	width: auto;
-	height: 40px;
-	line-height: 40px;
-	top: 10px;
- 	right: 10px;
-	-webkit-transition: all .1s ease-in-out;
-	   -moz-transition: all .1s ease-in-out;
-		-ms-transition: all .1s ease-in-out;
-		 -o-transition: all .1s ease-in-out;
-			transition: all .1s ease-in-out;
+    cursor: pointer;
+    display: block;
+    position: absolute;
+    font-size: 14px;
+    color: #808080;
+    width: auto;
+    height: 40px;
+    line-height: 40px;
+    top: 10px;
+    right: 10px;
+    -webkit-transition: all .1s ease-in-out;
+       -moz-transition: all .1s ease-in-out;
+        -ms-transition: all .1s ease-in-out;
+         -o-transition: all .1s ease-in-out;
+            transition: all .1s ease-in-out;
 }
 
 .menu-close-btn:hover {
-	color: #ffffff;
-	-webkit-transition: all .1s ease-in-out;
-	   -moz-transition: all .1s ease-in-out;
-		-ms-transition: all .1s ease-in-out;
-		 -o-transition: all .1s ease-in-out;
-			transition: all .1s ease-in-out;
+    color: #ffffff;
+    -webkit-transition: all .1s ease-in-out;
+       -moz-transition: all .1s ease-in-out;
+        -ms-transition: all .1s ease-in-out;
+         -o-transition: all .1s ease-in-out;
+            transition: all .1s ease-in-out;
 }
 
+
 /* Push the body after clicking the menu button */
+
 .body-push {
-	overflow-x: hidden;
-	position: relative;
-	left: 0;                    /* left: 0; */
+    overflow-x: hidden;
+    position: relative;
+    left: 0;
 }
 
 .body-push-toright {
-	left: 200px;                /* left: 200px; */
+    left: 250px;
 }
 
 .body-push-toleft {
-	left: -200px;               /* left: -200px; */
+    left: -250px;
 }
 
 .menu,
 .body-push {
-	-webkit-transition: all .3s ease;
-	   -moz-transition: all .3s ease;
-		-ms-transition: all .3s ease;
-		 -o-transition: all .3s ease;
-			transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+       -moz-transition: all .3s ease;
+        -ms-transition: all .3s ease;
+         -o-transition: all .3s ease;
+            transition: all .3s ease;
 }
 
+
+/* Button that toggles menu */
+
 #menuToggle {
-	position: absolute;
-	top: 20px;
+    position: absolute;
+    top: 20px;
     right: 0px;
     z-index: 11;
-	display: block;
-	text-align: center;
-	font-size: 14px;
-	color: #ffffff;
-	width: 40px;
-	height: 40px;
-	line-height: 40px;
-	cursor: pointer;
-	background: rgba(0,0,0,0.25);
-	-webkit-transition: all .1s ease-in-out;
-	   -moz-transition: all .1s ease-in-out;
-		-ms-transition: all .1s ease-in-out;
-		 -o-transition: all .1s ease-in-out;
-			transition: all .1s ease-in-out;
+    display: block;
+    text-align: center;
+    font-size: 14px;
+    color: #ffffff;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    cursor: pointer;
+    background: rgba(0,0,0,0.25);
+    -webkit-transition: all .1s ease-in-out;
+       -moz-transition: all .1s ease-in-out;
+        -ms-transition: all .1s ease-in-out;
+         -o-transition: all .1s ease-in-out;
+            transition: all .1s ease-in-out;
 }
 
 #menuToggle:hover {
-	color: #ffffff;
-	background: rgba(0,0,0,0.2);
-	-webkit-transition: all .1s ease-in-out;
-	   -moz-transition: all .1s ease-in-out;
-		-ms-transition: all .1s ease-in-out;
-		 -o-transition: all .1s ease-in-out;
-			transition: all .1s ease-in-out;
+    color: #ffffff;
+    background: rgba(0,0,0,0.2);
+    -webkit-transition: all .1s ease-in-out;
+       -moz-transition: all .1s ease-in-out;
+        -ms-transition: all .1s ease-in-out;
+         -o-transition: all .1s ease-in-out;
+            transition: all .1s ease-in-out;
 }
