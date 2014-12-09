@@ -298,6 +298,10 @@ section img {
 }
 
 
+.paper .conf {
+    margin-left: 10px;
+}
+
 /* Redefine some colors */
 
 .paper-abstract, .paper-heading, .paper a {
