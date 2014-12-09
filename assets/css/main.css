@@ -297,6 +297,23 @@ section img {
     font-weight: 200;
 }
 
-.paper-abstract, .paper-heading {
+
+/* Redefine some colors */
+
+.paper-abstract, .paper-heading, .paper a {
     color: LightGray;
+}
+
+.paper a.btn {
+    color: #f85c37;
+}
+
+.paper a:hover, .paper a:focus {
+    color: #7b7b7b;
+}
+
+.paper .download-btn {
+    float: right;
+    /* float: left; */
+    /* margin-left: -80px; */
 }
