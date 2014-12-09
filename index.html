@@ -25,6 +25,12 @@
     <link href="http://fonts.googleapis.com/css?family=EB+Garamond"
           rel="stylesheet" type="text/css">
 
+    <link href="http://fonts.googleapis.com/css?family=PT+Sans"
+          rel="stylesheet" type="text/css">
+
+    <link href="http://fonts.googleapis.com/css?family=Droid+Serif:400,700italic"
+          rel="stylesheet" type="text/css" />
+
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="assets/js/html5shiv.js"></script>
@@ -35,6 +41,163 @@
   <body data-spy="scroll" data-offset="0">
     <!-- Contents -->
     
+    <!-- ========== PUBLICATIONS SECTION ========== -->
+    <section id="publications" name="publications">
+      <div class="container">
+        <h3>PUBLICATIONS</h3>
+        <p class="centered my-bullets">
+          <i class="fa fa-circle"></i>
+          <i class="fa fa-circle"></i>
+          <i class="fa fa-circle"></i>
+        </p>
+
+        <div id="papers" class="col-lg-10 col-lg-offset-1">
+          <!-- Class Hierarchy Complementation Paper -->
+          <div class="paper">
+            <h4 class="paper-heading">
+              <!-- Paper Title -->
+              <a href="http://dl.acm.org/citation.cfm?id=2509136.2509530">
+                Class Hierarchy Complementation: Soundly Completing a
+                Partial Type Graph
+              </a>
+              <!-- Toggle Abstract Button -->
+              <a class="btn toggle-abstract" data-toggle="collapse"
+                 data-target="#collapseOne" href="#collapseOne">
+                Abstract
+              </a>
+              <!-- Paper Authors -->
+              <span class="paper-authors">
+                George Balatsouras, Yannis Smaragdakis
+              </span>
+            </h4>
+            <p id="collapseOne" class="paper-abstract collapse">
+              We present the problem of class hierarchy
+              complementation: given a partially known hierarchy of
+              classes together with subtyping constraints (“A has to
+              be a transitive subtype of B”) complete the hierarchy so
+              that it satisfies all constraints. The problem has
+              immediate practical application to the analysis of
+              partial programs—e.g., it arises in the process of
+              providing a sound handling of “phantom classes” in the
+              Soot program analysis framework. We provide algorithms
+              to solve the hierarchy complementation problem in the
+              single inheritance and multiple inheritance settings. We
+              also show that the problem in a language such as Java,
+              with single inheritance but multiple subtyping and
+              distinguished class vs. interface types, can be
+              decomposed into separate single- and multiple-subtyping
+              instances. We implement our algorithms in a tool,
+              JPhantom, which complements partial Java bytecode
+              programs so that the result is guaranteed to satisfy the
+              Java verifier requirements. JPhantom is highly scalable
+              and runs in mere seconds even for large input
+              applications and complex constraints (with a maximum of
+              14s for a 19MB binary).
+            </p><!-- /paper-abstract -->
+          </div> <!-- /paper -->
+
+          <!-- Set-based Paper -->
+          <div class="paper">
+            <h4 class="paper-heading">
+              <!-- Paper Title -->
+              <a href="http://dl.acm.org/citation.cfm?id=2509136.2509524">
+                Set-Based Pre-Processing for Points-To Analysis
+              </a>
+              <!-- Toggle Abstract Button -->
+              <a class="btn toggle-abstract" data-toggle="collapse"
+                 data-target="#collapseTwo" href="#collapseTwo">
+                Abstract
+              </a>
+              <!-- Paper Authors -->
+              <span class="paper-authors">
+                Yannis Smaragdakis, George Balatsouras, George Kastrinis
+              </span>
+            </h4>
+            <p id="collapseTwo" class="paper-abstract collapse">
+              We present set-based pre-analysis: a virtually universal
+              optimization technique for flow-insensitive points-to
+              analysis. Points-to analysis computes a static
+              abstraction of how object values flow through a
+              program’s variables. Set-based pre-analysis relies on
+              the observation that much of this reasoning can take
+              place at the set level rather than the value
+              level. Computing constraints at the set level results in
+              significant optimization opportunities: we can rewrite
+              the in- put program into a simplified form with the same
+              essential points-to properties. This rewrite results in
+              removing both local variables and instructions, thus
+              simplifying the subsequent value-based points-to
+              computation. Effectively, set-based pre-analysis puts
+              the program in a normal form optimized for points-to
+              analysis.  Compared to other techniques for off-line
+              optimization of points-to analyses in the literature,
+              the new elements of our approach are the ability to
+              eliminate statements, and not just variables, as well as
+              its modularity: set-based pre-analysis can be performed
+              on the input just once, e.g., allowing the
+              pre-optimization of libraries that are subsequently
+              reused many times and for different analyses. In
+              experiments with Java programs, set-based pre-analysis
+              eliminates 30% of the program’s local variables and 30%
+              or more of computed context-sensitive points-to facts,
+              over a wide set of benchmarks and analyses, resulting in
+              a 24% average speedup (max: 103%, median: 20%).
+            </p><!-- /paper-abstract -->
+          </div> <!-- /paper -->
+
+          <!-- Introspective Paper -->
+          <div class="paper">
+            <h4 class="paper-heading">
+              <!-- Paper Title -->
+              <a href="http://dl.acm.org/citation.cfm?id=594291.2594320">
+                Introspective analysis: context-sensitivity, across the board
+              </a>
+              <!-- Toggle Abstract Button -->
+              <a class="btn toggle-abstract" data-toggle="collapse"
+                 data-target="#collapseThree" href="#collapseThree">
+                Abstract
+              </a>
+              <!-- Paper Authors -->
+              <span class="paper-authors">
+                Yannis Smaragdakis, George Kastrinis, George Balatsouras
+              </span>
+            </h4>
+            <p id="collapseThree" class="paper-abstract collapse">
+              Context-sensitivity is the primary approach for adding
+              more precision to a points-to analysis, while hopefully
+              also maintaining scalability. An oft-reported problem
+              with context-sensitive analyses, however, is that they
+              are bi-modal: either the analysis is precise enough that
+              it manipulates only manageable sets of data, and thus
+              scales impressively well, or the analysis gets quickly
+              derailed at the first sign of imprecision and becomes
+              orders-of-magnitude more expensive than would be
+              expected given the program’s size. There is currently no
+              approach that makes precise context-sensitive analyses
+              (of any flavor: call-site-, object-, or type-sensitive)
+              scale across the board at a level comparable to that of
+              a context-insensitive analysis. To address this issue,
+              we propose introspective analysis: a technique for
+              uniformly scaling context-sensitive analysis by
+              eliminating its performance-detrimental behavior, at a
+              small precision expense. Introspective analysis consists
+              of a common adaptivity pattern: first perform a
+              context-insensitive analysis, then use the results to
+              selectively refine (i.e., analyze context-sensitively)
+              program elements that will not cause explosion in the
+              running time or space. The technical challenge is to
+              appropriately identify such program elements. We show
+              that a simple but principled approach can be remarkably
+              effective, achieving scalability (often with dramatic
+              speedup) for benchmarks previously completely
+              out-of-reach for deep context-sensitive analyses.
+            </p><!-- /paper-abstract -->
+          </div> <!-- /paper -->
+
+        </div> <!-- /papers -->
+      </div><!-- /container -->
+    </section>
+
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

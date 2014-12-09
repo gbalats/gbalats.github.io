@@ -65,6 +65,44 @@ hr {
 }
 
 
+/* Sections */
+
+section {
+    background: #1a1a1a;
+    padding-top: 70px;
+    padding-bottom: 70px;
+    text-align: center
+}
+
+section h3 {
+    color: white;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.my-bullets {
+}
+
+.my-bullets > i {
+    font-size: 8px;
+}
+
+section i {
+    color: #fff;
+    padding: 3px;
+}
+
+section p {
+    font-size: 20px;
+    color: #f2f2f2;
+}
+
+section img {
+    text-align: center;
+}
+
+
 /* MENU CONF */
 
 .menu {
@@ -232,4 +270,33 @@ hr {
         -ms-transition: all .1s ease-in-out;
          -o-transition: all .1s ease-in-out;
             transition: all .1s ease-in-out;
+}
+
+
+/* Papers */
+
+.paper {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.paper-heading {
+    font-family: 'Oswald', sans-serif;
+    font-size: 110%;
+    font-weight: 400;
+    letter-spacing: 2px;
+}
+
+.paper-abstract {
+    font-family: 'PT Sans', sans-serif;
+    font-size: 100%;
+}
+
+.paper-authors {
+    display: block;
+    font-weight: 200;
+}
+
+.paper-abstract, .paper-heading {
+    color: LightGray;
 }
