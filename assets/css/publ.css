@@ -40,8 +40,8 @@ p.paper-abstract {
     color: #7b7b7b;
 }
 
-.paper .download-btn {
-    padding: 0px;
+.paper .download-btn, .paper .toggle-abstract {
+    padding: 5px;
     /* float: right; */
     /* float: left; */
     /* margin-left: -80px; */
