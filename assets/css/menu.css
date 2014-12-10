@@ -51,11 +51,11 @@
     margin: 25px 2px;
 }
 
+
 /* Button that toggles menu */
 
 #menu-toggle {
-    position: absolute;
-    top: 20px;
+    position: fixed;
     z-index: 1;
     /* color: #ffffff; */
     width: 40px;
@@ -76,6 +76,13 @@
         -ms-transition: all .1s ease-in-out;
          -o-transition: all .1s ease-in-out;
             transition: all .1s ease-in-out;
+}
+
+/* Absolute positioned wrapper for the element you want to fix position */
+.fixed-menu-toggle-wrapper {
+    position: absolute;
+    top: 20px;
+    right: -20px;
 }
 
 #page-content-wrapper > .container-fluid {

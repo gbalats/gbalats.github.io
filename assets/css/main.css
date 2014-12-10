@@ -19,6 +19,10 @@ h1, h2, h3, h4, h5, h6 {
     color: #333;
 }
 
+.wrapper {
+    position: relative;
+}
+
 /* Paragraph & Typographic */
 p {
     line-height: 28px;
