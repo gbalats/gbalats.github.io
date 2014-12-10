@@ -1,3 +1,5 @@
+// Obfuscate email
+
 $("#fake_email").click( function(e) {
     var username = "gbalats",
           domain = "gmail.com";
@@ -5,13 +7,27 @@ $("#fake_email").click( function(e) {
     window.location.href = "mailto:" + username + "@" + domain;
 });
 
-;(function(){
 
-	// Menu settings
-	$('#menuToggle, .menu-close-btn').on('click', function(){
-		$('#menuToggle').toggleClass('active');
-		$('body').toggleClass('body-push-toright');
-		$('#theMenu').toggleClass('menu-close');
-	});
+// Toggle sidebar
 
-})(jQuery)
+$("#menu-toggle").click(function(e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+});
+
+
+// Open links in new tabs
+
+$(".icons")
+    .find("a")
+    .not("[id='fake_email']")
+    .attr("target", "_blank");
+
+$("a[href^='http']")
+    .not("[href*='gbalats.gihtub.io]")
+    .attr("target", "_blank");
+
+// Initialize smooth scrolling
+smoothScroll.init({
+    speed: 700
+});
