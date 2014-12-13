@@ -1,0 +1,38 @@
+<!-- Sidebar -->
+<div id="theMenu">
+  <ul class="sidebar-nav">
+    <li class="sidebar-brand">
+      <h1 class="logo"><a href="#">{{ site.author }}</a></h1>
+    </li>
+    <!-- {% for p in site.pages %} -->
+    <!--   {% if p.title %} -->
+    <!--   <li> -->
+    <!--     <a class="page-link{% if p.url == page.url %} active{% endif %}" href="{{ p.url | prepend: site.baseurl }}">{{ p.title }}</a> -->
+    <!--   <li> -->
+    <!--   {% endif %} -->
+    <!-- {% endfor %} -->
+    <li><a data-scroll href="#about">About Me</a><li>
+    <li><a data-scroll href="#publications">Publications</a><li>
+    <li><a data-scroll href="#presentations">Presentations</a><li>
+    <li><a data-scroll href="#emacs">The One True Editor</a><li>
+    <li><a data-scroll href="#portfolio">Portfolio</a><li>
+    <li><a data-scroll href="#contact">Contact</a></li>
+    <li class="icons">
+      <a href="https://gr.linkedin.com/pub/george-balatsouras/25/a29/799">
+        <i class="fa fa-linkedin"></i>
+      </a>
+      <a href="http://www.last.fm/user/{{ site.lastfm_username }}"><i class="fa fa-lastfm"></i></a>
+      <a href="https://bitbucket.org/{{ site.bitbucket_username }}"><i class="fa fa-bitbucket"></i></a>
+      <a href="https://github.com/{{ site.github_username }}"><i class="fa fa-github"></i></a>
+      <a id="fake_email" href="#"><i class="fa fa-envelope"></i></a>
+      <!-- <a href="https://plus.google.com/117181205673986226103"><i class="fa fa-google-plus"></i></a> -->
+    </li>
+  </ul>
+
+  <!-- Toggle Menu button -->
+  <div class="fixed-menu-toggle-wrapper">
+    <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">
+      <i class="fa fa-reorder"></i>
+    </a>
+  </div>
+</div><!-- /#theMenu -->

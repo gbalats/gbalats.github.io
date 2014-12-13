@@ -1,0 +1,13 @@
+# Site settings
+author: George Balatsouras
+title: G. Balatsouras | Homepage
+email: gbalats@gmail.com
+description: Personal web page of George Balatsouras
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://localhost:4000" # the base hostname & protocol for your site
+github_username:  gbalats
+bitbucket_username:  gbal
+lastfm_username: gbalats
+
+# Build settings
+markdown: kramdown
