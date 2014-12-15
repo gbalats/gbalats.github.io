@@ -27,44 +27,7 @@ sections:
         <h3>PUBLICATIONS <small>plus slides</small></h3>
       </div>
 
-      <div id="papers" class="">
-
-        {% for paper in site.data.publications%}
-        <div class="paper">
-          <h4 class="paper-heading">
-            <!-- Paper Title -->
-            <a href="http://dl.acm.org/citation.cfm?id={{ paper.doi }}">
-              {{ paper.title }}
-            </a>
-            <!-- Toggle Abstract Button -->
-            <a class="btn toggle-abstract" data-toggle="collapse"
-               data-target="#abstract{{ forloop.index }}">
-              abstract
-            </a>
-            <!-- Download Button -->
-            <a class="btn download-btn" href="{{ paper.pdf_link }}">
-              pdf <i class="fa fa-file-pdf-o fa-lg"></i>
-            </a>
-            {% if paper.pps_link %}
-            <!-- Download Presentation Button -->
-            <a class="btn download-btn" href="{{ paper.pps_link }}">
-              slides <i class="fa fa-file-powerpoint-o fa-lg"></i>
-            </a>
-            {% endif %}
-            <!-- Paper Authors -->
-            <span class="paper-authors">
-              {{ paper.authors | join: ', ' }}
-              <!-- Conference -->
-              <span class="conf">{{ paper.conference }}</span>
-            </span>
-          </h4>
-          <p id="abstract{{ forloop.index }}" class="paper-abstract collapse">
-            {{ paper.abstract }}
-          </p><!-- /paper-abstract -->
-        </div> <!-- /paper -->
-        {% endfor %}
-
-      </div> <!-- /papers -->
+      {% include papers.html %}
 
     </div>   <!-- /#publications -->
   </div> <!-- /.sect -->
