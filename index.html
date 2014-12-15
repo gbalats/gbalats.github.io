@@ -1,5 +1,9 @@
 ---
 layout: default
+width:
+  - col-xs-12
+  - col-md-11 col-md-offset-1
+  - col-lg-10
 sections:
   - title: About Me
     handle: about
@@ -18,7 +22,7 @@ sections:
 <div class="container-fluid">
   <!-- ========== PUBLICATIONS SECTION ========== -->
   <div class="row sect">
-    <div id="publications" class="col-xs-12 col-md-11 col-md-offset-1 col-lg-10">
+    <div id="publ" class="{{ page.width | join: ' ' }}">
       <div class="page-header">
         <h3>PUBLICATIONS <small>plus slides</small></h3>
       </div>
@@ -68,14 +72,9 @@ sections:
 
   <!-- ================= EMACS SECTION ====================== -->
   <div class="row sect">
-    <div id="emacs" class="col-xs-12 col-md-11 col-md-offset-1 col-lg-10">
+    <div id="emacs" class="{{ page.width | join: ' ' }}">
       <div class="page-header">
         <h3>ALL THINGS EMACS</h3>
-        <!-- <p class="my-bullets"> -->
-        <!--   <i class="fa fa-circle"></i> -->
-        <!--   <i class="fa fa-circle"></i> -->
-        <!--   <i class="fa fa-circle"></i> -->
-        <!-- </p> -->
       </div> <!-- /.page-header -->
       
       <div class="plain">
@@ -112,7 +111,7 @@ sections:
           </a>.
         </p>
 
-      </div> <!--  -->
-    </div>   <!-- /emacs -->
-  </div>     <!-- /.sect -->
-</div>       <!-- /.container-fluid -->
+      </div><!-- /.plain -->
+    </div><!-- /emacs -->
+  </div><!-- /.sect -->
+</div><!-- /.container-fluid -->
