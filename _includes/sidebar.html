@@ -4,19 +4,13 @@
     <li class="sidebar-brand">
       <h1 class="logo"><a href="#">{{ site.author }}</a></h1>
     </li>
-    <!-- {% for p in site.pages %} -->
-    <!--   {% if p.title %} -->
-    <!--   <li> -->
-    <!--     <a class="page-link{% if p.url == page.url %} active{% endif %}" href="{{ p.url | prepend: site.baseurl }}">{{ p.title }}</a> -->
-    <!--   <li> -->
-    <!--   {% endif %} -->
-    <!-- {% endfor %} -->
-    <li><a data-scroll href="#about">About Me</a><li>
-    <li><a data-scroll href="#publications">Publications</a><li>
-    <li><a data-scroll href="#presentations">Presentations</a><li>
-    <li><a data-scroll href="#emacs">The One True Editor</a><li>
-    <li><a data-scroll href="#portfolio">Portfolio</a><li>
-    <li><a data-scroll href="#contact">Contact</a></li>
+    {% for section in page.sections %}
+    <li>
+      <a data-scroll href="#{{ section.handle }}">
+        {{ section.title }}
+      </a>
+    <li>
+    {% endfor %}
     <li class="icons">
       <a href="https://gr.linkedin.com/pub/george-balatsouras/25/a29/799">
         <i class="fa fa-linkedin"></i>
