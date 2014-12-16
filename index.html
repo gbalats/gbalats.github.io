@@ -24,7 +24,7 @@ sections:
   <div class="row sect">
     <div id="publ" class="{{ page.width | join: ' ' }}">
       <div class="page-header">
-        <h3>PUBLICATIONS <small>plus slides</small></h3>
+        <h2>PUBLICATIONS <small>plus slides</small></h2>
       </div>
 
       {% include papers.html %}
@@ -37,44 +37,42 @@ sections:
   <div class="row sect">
     <div id="emacs" class="{{ page.width | join: ' ' }}">
       <div class="page-header">
-        <h3>ALL THINGS EMACS</h3>
+        <h2>ALL THINGS EMACS</h2>
       </div> <!-- /.page-header -->
-      
-      <div class="plain">
-        <h4>Automatic Bytecode Disassembly</h4>
-        <p>Program analysis often requires manual inspection of
-          not just the source code but the actual IR that is
-          passed to the static analysis tool. Most of the times
-          this intermediate representation is a compressed
-          format such as Java bytecode.
-        </p>
-        <p> Thus, to open an Emacs buffer containing Java
-          bytecode for instance, one first needs to run a
-          command that disassembles the file, and then he may
-          open its disassembled contents.
-        </p>
-        <p>Things are even worse when such a file is part of an
-          archive (e.g., inside a jar file). Then you have to
-          extract it first too.
-        </p>
 
-        <p>This is a task that can be easily automated by emacs,
-          assuming your system is properly configured and the
-          actual disassembler commands are included in your PATH
-          (e.g., javap).
-        </p>
+      <h3>Automatic Bytecode Disassembly</h3>
+      <p>Program analysis often requires manual inspection of
+        not just the source code but the actual IR that is
+        passed to the static analysis tool. Most of the times
+        this intermediate representation is a compressed
+        format such as Java bytecode.
+      </p>
+      <p> Thus, to open an Emacs buffer containing Java
+        bytecode for instance, one first needs to run a
+        command that disassembles the file, and then he may
+        open its disassembled contents.
+      </p>
+      <p>Things are even worse when such a file is part of an
+        archive (e.g., inside a jar file). Then you have to
+        extract it first too.
+      </p>
 
-        <p>To that end, I wrote these two simple Emacs
-          extensions that handle the task for (i)
-          <a href="https://github.com/gbalats/autodisass-java-bytecode">
-            Java Bytecode
-          </a> and (ii)
-          <a href="https://github.com/gbalats/autodisass-llvm-bitcode">
-            LLVM Bitcode
-          </a>.
-        </p>
+      <p>This is a task that can be easily automated by emacs,
+        assuming your system is properly configured and the
+        actual disassembler commands are included in your PATH
+        (e.g., javap).
+      </p>
 
-      </div><!-- /.plain -->
+      <p>To that end, I wrote these two simple Emacs
+        extensions that handle the task for (i)
+        <a href="https://github.com/gbalats/autodisass-java-bytecode">
+          Java Bytecode
+        </a> and (ii)
+        <a href="https://github.com/gbalats/autodisass-llvm-bitcode">
+          LLVM Bitcode
+        </a>.
+      </p>
+
     </div><!-- /emacs -->
   </div><!-- /.sect -->
 </div><!-- /.container-fluid -->

@@ -2,7 +2,7 @@
 
   {% for paper in site.data.publications%}
   <div class="paper">
-    <h4 class="paper-heading">
+    <h3 class="paper-heading">
       <!-- Paper Title -->
       <a href="http://dl.acm.org/citation.cfm?id={{ paper.doi }}">
         {{ paper.title }}
@@ -28,7 +28,7 @@
         <!-- Conference -->
         <span class="conf">{{ paper.conference }}</span>
       </span>
-    </h4>
+    </h3>
     <p id="abstract{{ forloop.index }}" class="paper-abstract collapse">
       {{ paper.abstract }}
     </p><!-- /paper-abstract -->
