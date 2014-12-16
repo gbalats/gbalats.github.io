@@ -1,0 +1,65 @@
+/* Generic Classes */
+
+.centered {
+    text-align: center;
+}
+
+.left-aligned {
+    text-align: left;
+}
+
+
+/* Three bullets */
+
+.three-bullets {
+    > i {
+        font-size: 8px;
+        padding: 3px;
+        color: #fff;
+    }
+}
+
+
+
+/**
+ * Sections
+ */
+.sect {
+    padding-bottom: $spacing-unit * 2;
+
+    h1 {
+        font-size: $heading-font-size * 2;
+        margin-bottom: 0;
+    }
+
+    h2 {
+        color: black;
+        font-size: $heading-font-size * 1.5;
+        margin-bottom: 0;
+        letter-spacing: 1px;
+    }
+
+    h3 {
+        font-size: $heading-font-size * 1.17;
+        font-weight: 400;
+        margin-bottom: 1em;
+    }
+
+    h4 {
+        font-family: $base-font-family;
+        font-size: 1em;
+        margin-bottom: 1.33em;
+    }
+
+    h5 {
+        font-family: $base-font-family;
+        font-size: .83em;
+        margin-bottom: 1.67em;
+    }
+
+    h6 {
+        font-family: $base-font-family;
+        font-size: .67em;
+        margin-bottom: 2.33em;
+    }
+}
