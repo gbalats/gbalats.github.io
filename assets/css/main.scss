@@ -40,12 +40,12 @@ $on-laptop:        800px;
 
 // Sidebar variables
 
-$sidebar-width:           265px;
+$sidebar-width:           250px;
 $sidebar-spacing-unit:     20px;
-$sidebar-font-size:        14px;
-$sidebar-font-family:  $heading-font-family;
+$sidebar-font-size:        12px;
+$sidebar-font-family:  'EB Garamond', serif;
 
-$sidebar-background-color:  darken($grey-color, 100%);
+$sidebar-background-color:  darken($grey-color, 40.8%);
 $sidebar-primary-color:     $grey-color-light;
 $sidebar-secondary-color:   $grey-color;
 $sidebar-brand-color:       $brand-color;

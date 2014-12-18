@@ -86,7 +86,7 @@
     list-style: none;
 
     h1, h2, h3, h4, h5, h6 {
-        font-size: 1.33em;
+        font-size: 0.8 * $heading-font-size;
     }
 
 
@@ -96,7 +96,6 @@
         a {
             line-height: 40px;
             display: block;
-            font-size: 1em;
             color: $sidebar-secondary-color;
 
             &:link, &:active, &:focus {
@@ -130,11 +129,16 @@
 
 #theMenu .sidebar-nav {
     font-size: $sidebar-font-size;
+    font-family: $sidebar-font-family;
     width: $sidebar-width;
+
+    li ~ li {
+        text-indent: $sidebar-spacing-unit * 1.5;
+    }
 
     a {
         font-weight: 700;
-        letter-spacing: 0.15em;
+        letter-spacing: 0.10em;
         text-transform: uppercase;
     }
 
@@ -148,9 +152,11 @@
         display: inline-block;
         vertical-align: middle;
         text-align: left;
-        width: ($sidebar-width - 2 * $sidebar-spacing-unit) / 5;
-        font-size: 20px;
+        line-height: 40px;
         margin: 25px 2px;
+        width: 30px;
+        /* width: ($sidebar-width - 4 * $sidebar-spacing-unit) / 5; */
+        font-size: 16px;
     }
 }
 
