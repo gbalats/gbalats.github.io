@@ -39,6 +39,14 @@
         font-size: .67em;
         margin-bottom: 2.33em;
     }
+
+    p ~ h3 {
+        padding-top: $spacing-unit;
+    }
+
+    p ~ h4 {
+        padding-top: $spacing-unit / 2;
+    }
 }
 
 
