@@ -6,8 +6,8 @@
 
 
 // Our variables
-$base-font-family: 'EB Garamond', serif;
-$base-font-size:   22px;
+$base-font-family: 'Quattrocento', serif;
+$base-font-size:   18px;
 $small-font-size:  $base-font-size * 0.875;
 $base-line-height: 1.5;
 
@@ -31,9 +31,24 @@ $orange-color:       #f85c37;
 $orange-color-light: lighten($orange-color, 30%);
 $orange-color-dark:  darken($orange-color, 15%);
 
+$brand-color:   $orange-color;
+
+
 $on-palm:          600px;
 $on-laptop:        800px;
 
+
+// Sidebar variables
+
+$sidebar-width:           265px;
+$sidebar-spacing-unit:     20px;
+$sidebar-font-size:        14px;
+$sidebar-font-family:  $heading-font-family;
+
+$sidebar-background-color:  darken($grey-color, 100%);
+$sidebar-primary-color:     $grey-color-light;
+$sidebar-secondary-color:   $grey-color;
+$sidebar-brand-color:       $brand-color;
 
 
 // Using media queries with like this:
@@ -62,8 +77,8 @@ $on-laptop:        800px;
 // Import partials from `sass_dir` (defaults to `_sass`)
 @import
         "base",
+        "sidebar",
         "layout",
         "syntax-highlighting",
-        "publications",
-        "sidebar"
+        "publications"
 ;
