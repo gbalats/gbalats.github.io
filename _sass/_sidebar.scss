@@ -147,6 +147,11 @@
         margin-top: $sidebar-spacing-unit;
     }
 
+    .icons {
+        text-indent: 0;
+        padding-left: $sidebar-spacing-unit * 1.5;
+    }
+
     .icons a > i {
         float: left;
         display: inline-block;
