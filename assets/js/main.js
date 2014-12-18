@@ -28,6 +28,9 @@ $(function() {
     $("a[href^='http']")
         .not("[href*='gbalats.github.io']")
         .attr("target", "_blank");
+
+    $("a.download-btn")
+        .attr("target", "_blank");
 });
 
 
