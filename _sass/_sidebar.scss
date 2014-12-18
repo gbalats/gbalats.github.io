@@ -158,16 +158,20 @@
 /* Button that toggles menu */
 
 #menu-toggle {
+    font-size: 14px;
     position: fixed;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
     z-index: 1;
-    background: darken($background-color, 5%);
+    background: darken($background-color, 25%);
+    color: $background-color;
     text-align: center;
 
     @include transition(all .1s ease-in-out);
 
     &:hover {
-        color: $background-color;
-        background: darken($background-color, 20%);
+        background: darken($background-color, 50%);
         @include transition(all .1s ease-in-out);
     }
 }
@@ -176,7 +180,7 @@
 /* Absolute positioned wrapper for the element you want to fix position */
 .fixed-menu-toggle-wrapper {
     position: absolute;
-    top: 25px;
+    top: 20px;
     right: -20px;
 }
 
