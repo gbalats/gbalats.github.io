@@ -17,6 +17,9 @@ sections:
   - title: All Things Emacs
     handle: emacs
 
+  - title: Contact Me
+    handle: contact
+
 ---
 
 <div class="container-fluid">
@@ -125,4 +128,57 @@ sections:
 
     </div><!-- /emacs -->
   </div><!-- /.sect -->
+
+  <!-- ========== CONTACT SECTION ========== -->
+  <div class="row sect">
+    <div id="contact" class="{{ page.width | join: ' ' }}">
+      <div class="page-header">
+        <h2>CONTACT ME</h2>
+      </div>
+
+      <p></p>
+      <h3>
+        Working Address
+        <small>
+          <!-- Button trigger map modal -->
+          <a type="button" class="btn" data-toggle="modal"
+             data-lat="37.968614, 23.766971" data-target="#uoaMapModal">
+            Click to open map
+          </a>
+        </small>
+      </h3>
+
+      <address>
+        Dept. of Informatics and Telecommunications<br/>
+        National and Kapodistrian University of Athens<br/>
+        Ilisia, 15784, Greece
+      </address>
+
+      <!-- Google Map -->
+      <div class="modal fade" id="uoaMapModal" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <!-- Close button -->
+              <button type="button" class="close" data-dismiss="modal">×</button>
+              <!-- Title -->
+              <h3 class="modal-title">
+                Dept. of Informatics and Telecommunications<br/>
+                University of Athens
+              </h3>
+            </div>
+            <div class="modal-body">
+              <!-- Map -->
+              <div id="mapCanvas" style="width: 500px; height: 400px"></div>
+            </div>
+            <div class="modal-footer">
+              <!-- Another close button -->
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+
+    </div>   <!-- /#contact -->
+  </div> <!-- /.sect -->
 </div><!-- /.container-fluid -->

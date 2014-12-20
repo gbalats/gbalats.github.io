@@ -40,3 +40,35 @@ $(function() {
         speed: 700
     });
 });
+
+
+// Google Map Modal
+function renderMap(mapCenter) {
+    // Basic map options
+    var mapOptions = {
+        center: mapCenter,
+        zoom: 14,
+        mapTypeId:google.maps.MapTypeId.ROADMAP
+    };
+
+    // Create map
+    var map = new google.maps.Map(document.getElementById("mapCanvas"), mapOptions);
+
+    // Create marker
+    var marker = new google.maps.Marker({position: map.getCenter()});
+    marker.setMap(map);
+
+    // Zoom in when marker is clicked
+    google.maps.event.addListener(marker, 'click', function() {
+        map.setZoom(16);
+        map.setCenter(marker.getPosition());
+    });
+}
+
+$(function() {
+    $('#uoaMapModal').on('shown.bs.modal', function(e) {
+        var element = $(e.relatedTarget);
+        var data = element.data("lat").split(',')
+        renderMap(new google.maps.LatLng(data[0], data[1]));
+    });
+});
