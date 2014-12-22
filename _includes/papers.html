@@ -9,16 +9,19 @@
       </a>
       <!-- Toggle Abstract Button -->
       <a class="btn toggle-abstract" data-toggle="collapse"
-         data-target="#abstract{{ forloop.index }}">
+         data-target="#abstract{{ forloop.index }}"
+         title="Click to toggle abstract">
         abstract
       </a>
       <!-- Download Button -->
-      <a class="btn download-btn" href="{{ paper.pdf_link }}">
+      <a class="btn download-btn" href="{{ paper.pdf_link }}"
+         title="Download PDF">
         pdf <i class="fa fa-file-pdf-o fa-lg"></i>
       </a>
       {% if paper.pps_link %}
       <!-- Download Presentation Button -->
-      <a class="btn download-btn" href="{{ paper.pps_link }}">
+      <a class="btn download-btn" href="{{ paper.pps_link }}"
+         title="Download presentation">
         slides <i class="fa fa-file-powerpoint-o fa-lg"></i>
       </a>
       {% endif %}
