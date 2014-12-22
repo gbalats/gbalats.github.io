@@ -163,6 +163,13 @@
         /* width: ($sidebar-width - 4 * $sidebar-spacing-unit) / 5; */
         font-size: 16px;
     }
+
+    .icon-text {
+        display: none;
+        font-family: $alt-font-family;
+        font-size: $alt-font-size;
+        color: $sidebar-secondary-color;
+    }
 }
 
 

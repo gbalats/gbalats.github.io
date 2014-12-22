@@ -72,3 +72,19 @@ $(function() {
         renderMap(new google.maps.LatLng(data[0], data[1]));
     });
 });
+
+
+
+// Display icon text
+$(function() {
+    $('.icons > a').hover(
+        function() {
+            var target = $(this).data("target");
+            $(".icons").parent().find(target).show();
+        },
+        function() {
+            var target = $(this).data("target");
+            $(".icons").parent().find(target).hide();
+        }
+    );
+});
