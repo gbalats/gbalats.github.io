@@ -8,11 +8,11 @@ sections:
   - title: About Me
     handle: about
 
+  - title: Projects
+    handle: projects
+
   - title: Publications
     handle: publ
-
-  - title: Presentations
-    handle: pres
 
   - title: All Things Emacs
     handle: emacs
@@ -39,6 +39,56 @@ sections:
       Smaragdakis</a>.
 
     </div>   <!-- /#publications -->
+  </div> <!-- /.sect -->
+
+  <!-- ========== PORTOFOLIO SECTION ========== -->
+  <div class="row sect">
+    <div id="projects" class="{{ page.width | join: ' ' }}">
+      <div class="page-header">
+        <h2>
+          PROJECTS
+        </h2>
+      </div>
+
+      <h3>JPhantom</h3>
+
+      {% for paper in site.data.publications %}
+        {% if paper.doi == '2509136.2509530' %}
+          {% assign jphantom_paper = paper %}
+        {% endif %}
+      {% endfor %}
+
+      <p>Many static analysis tools assume that the <em>whole
+        program</em> will be available, in order to analyze it. In
+        practice, however, that is rarely the case, and there are many
+        times that you are stuck with a program which you are able to
+        run, but not analyze (due to some missing code of some library
+        that you don't actually need)!
+      </p>
+
+      <p><a href="https://github.com/gbalats/jphantom">JPhantom</a>
+        tries to deal with this problem for Java, while being agnostic
+        to the actual tool that will perform the static analysis. It
+        applies a preprocessing step that detects phantom code and
+        replaces it with dummy code, thus producing
+        a <em>complete</em> program that should be now analyzable.
+      </p>
+
+      <p>The real challenge of this task is the various type
+        constraints that the final program (plus its dummy complement)
+        must satisfy in order to form
+        valid <a href="http://en.wikipedia.org/wiki/Java_bytecode">Java
+        bytecode</a>. You can read more about it
+        <a target="_blank" href="{{ jphantom_paper.pps_link }}">here</a>
+        and <a href="{{ jphantom_paper.pdf_link }}">here</a>.
+      </p>
+
+      <p>Currently, JPhantom is being used by
+        <a href="http://doop.program-analysis.org/">Doop</a> and
+        <a href="https://github.com/cuplv/droidel">Droidel</a>.
+      </p>
+
+    </div>   <!-- /#portfolio -->
   </div> <!-- /.sect -->
 
   <!-- ========== PUBLICATIONS SECTION ========== -->
