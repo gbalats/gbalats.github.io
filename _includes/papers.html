@@ -4,9 +4,11 @@
   <div class="paper">
     <h3 class="paper-heading">
       <!-- Paper Title -->
-      <a href="http://dl.acm.org/citation.cfm?id={{ paper.doi }}">
-        {{ paper.title }}
-      </a>
+      {% if paper.url %}
+      <a href="{{ paper.url }}">{{ paper.title }}</a>
+      {% else %}
+      <a href="{{ paper.doi | prepend:'http://dl.acm.org/citation.cfm?id=' }}">{{ paper.title }}</a>
+      {% endif %}
       <!-- Toggle Abstract Button -->
       <a class="btn toggle-abstract" data-toggle="collapse"
          data-target="#abstract{{ forloop.index }}"
@@ -28,8 +30,13 @@
       <!-- Paper Authors -->
       <span class="paper-authors">
         {{ paper.authors | join: ', ' }}
+        {% if paper.conference %}
         <!-- Conference -->
         <span class="conf">{{ paper.conference }}</span>
+        {% elsif paper.journal %}
+        <!-- Conference -->
+        <span class="journal">{{ paper.journal }}</span>
+        {% endif %}
       </span>
     </h3>
     <p id="abstract{{ forloop.index }}" class="paper-abstract collapse">

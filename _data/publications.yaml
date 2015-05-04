@@ -1,3 +1,26 @@
+- doi: "10.1561/2500000014"
+  url: http://dx.doi.org/10.1561/2500000014
+  title: >
+    Pointer Analysis
+  authors:
+    - Yannis Smaragdakis
+    - George Balatsouras
+  journal: "Foundations and Trends&#174; in Programming Languages"
+  pdf_link: http://yanniss.github.io/points-to-tutorial15.pdf
+  abstract: |
+    Pointer analysis is a fundamental static program analysis, with a
+    rich literature and wide applications. The goal of pointer
+    analysis is to compute an approximation of the set of program
+    objects that a pointer variable or expression can refer to. We
+    present an introduction and survey of pointer analysis techniques,
+    with an emphasis on distilling the essence of common analysis
+    algorithms. To this end, we focus on a declarative presentation of
+    a common core of pointer analyses: algorithms are modeled as
+    configurable, yet easy-to-follow, logical specifications. The
+    specifications serve as a starting point for a broader discussion
+    of the literature, as independent threads spun from the
+    declarative model.
+
 - doi: "2509136.2509530"
   title: >
     Class Hierarchy Complementation: Soundly Completing a Partial Type Graph
