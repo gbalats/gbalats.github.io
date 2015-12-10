@@ -12,7 +12,13 @@ lastfm_username: gbalats
 # Build settings
 markdown: redcarpet
 redcarpet:
-    extensions: ["smart", "tables", "no_intra_emphasis", "with_toc_data"]
+    extensions: [
+        "smart",
+        "tables",
+        "no_intra_emphasis",
+        "with_toc_data",
+        "highlight"
+    ]
 
 # Sass settings
 sass:

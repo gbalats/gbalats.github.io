@@ -20,6 +20,8 @@
               </div>
 
               {{ content }}
+
+              {% include disqus.html %}
             </div>
           </div>
         </div>
@@ -28,7 +30,7 @@
     </div><!-- /#wrapper -->
 
     {% include bootstrap-js.html %}
-
+    <script id="dsq-count-scr" src="//gbalats.disqus.com/count.js" async></script>
   </body>
 
 </html>

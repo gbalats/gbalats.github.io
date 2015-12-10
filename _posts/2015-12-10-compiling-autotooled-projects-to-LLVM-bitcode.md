@@ -23,8 +23,6 @@ sections:
 
 ---
 
-<!-- ## Generating LLVM bitcode for the GNU coreutils ## -->
-
 To be able to analyze a C/C++ project with
 [LLVM Datalog](https://github.com/plast-lab/llvm-datalog), we must
 generate a single *whole-program*
@@ -35,7 +33,7 @@ though, so we must manually tweak the build process to do that.
 
 In what follows, I describe the necessary steps for compiling
 [GNU coreutils](http://www.gnu.org/software/coreutils/coreutils.html)
-so that we end up with a single LLVM bitcode file per coreutil command
+so that we end up with a single ==LLVM bitcode== file per coreutil command
 (instead of an executable file), but the process should be roughly the
 same for other autotooled software as well.
 
@@ -155,10 +153,9 @@ To recap:
     $ ...
     $ export LDFLAGS=" -flto -fuse-ld=gold  -Wl,-plugin-opt=also-emit-llvm "
     $ ./configure
-    $ make
     ~~~
 
-4. And now it's time to compile GNU coreutils at last!
+4. And now it's time to compile ==GNU coreutils== at last!
 
     ~~~ console
     $ make
