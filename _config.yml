@@ -10,8 +10,9 @@ bitbucket_username:  gbal
 lastfm_username: gbalats
 
 # Build settings
-markdown: kramdown
-
+markdown: redcarpet
+redcarpet:
+    extensions: ["smart", "tables", "no_intra_emphasis", "with_toc_data"]
 
 # Sass settings
 sass:
