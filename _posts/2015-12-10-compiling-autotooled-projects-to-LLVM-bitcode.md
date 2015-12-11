@@ -9,19 +9,17 @@ width:
   - col-lg-7
 sections:
   - title: About Me
-    handle: about
-
+    link: "/#about"
   - title: Projects
-    handle: projects
-
+    link: "/#projects"
   - title: Publications
-    handle: publ
-
+    link: "/#publ"
   - title: All Things Emacs
-    handle: emacs
-
+    link: "/#emacs"
+  - title: Blog
+    link: "/#blog"
   - title: Contact Me
-    handle: contact
+    link: "/#contact"
 
 ---
 
