@@ -1,6 +1,8 @@
 ---
 title: Compiling autotooled projects to LLVM Bitcode
 layout: post
+disqus_id: 16252
+comments: true
 width:
   - col-xs-12
   - col-md-11 col-md-offset-1
