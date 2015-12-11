@@ -17,6 +17,9 @@ sections:
   - title: All Things Emacs
     handle: emacs
 
+  - title: Blog
+    handle: blog
+
   - title: Contact Me
     handle: contact
 
@@ -201,6 +204,24 @@ sections:
 
     </div><!-- /emacs -->
   </div><!-- /.sect -->
+
+  <!-- ========== BLOG SECTION ========== -->
+  <div class="row sect">
+    <div id="blog" class="{{ page.width | join: ' ' }}">
+      <div class="page-header">
+        <h2>LATEST POSTS</h2>
+      </div> <!-- /.page-header -->
+
+      <ul class="posts">
+        {% for post in site.posts limit:20 %}
+        <li>
+          <span>{{ post.date | date_to_string }}</span> &raquo;
+          <a href="{{ post.url | prepend: site.baseurl }}" >{{ post.title }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
 
   <!-- ========== CONTACT SECTION ========== -->
   <div class="row sect">

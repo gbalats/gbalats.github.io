@@ -67,6 +67,10 @@ ul, ol {
     margin-left: $spacing-unit;
 }
 
+ul {
+    list-style-type: square;
+}
+
 li {
     > ul,
     > ol {
