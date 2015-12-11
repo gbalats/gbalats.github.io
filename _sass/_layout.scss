@@ -306,6 +306,7 @@
     padding-bottom: $spacing-unit / 2;
     margin-bottom: $spacing-unit;
     margin-top: $spacing-unit * 1.5;
+    line-height: 1.3;
 }
 
 .post-header {
@@ -320,7 +321,6 @@
 
         color: black;
         letter-spacing: -1px;
-        line-height: 1;
     }
 
     h2 {
