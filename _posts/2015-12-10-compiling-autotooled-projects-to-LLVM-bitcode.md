@@ -1,5 +1,5 @@
 ---
-title: Compiling autotooled projects to LLVM Bitcode
+title: Compiling Autotooled projects to LLVM Bitcode
 layout: post
 disqus_id: 16252
 comments: true
@@ -30,12 +30,12 @@ To be able to analyze a C/C++ project with
 generate a single *whole-program*
 [LLVM bitcode](http://llvm.org/releases/2.6/docs/BitCodeFormat.html)
 file. Many such projects are built with
-[autotools](https://www.gnu.org/software/automake/manual/html_node/Autotools-Introduction.html)
+[Autotools](https://www.gnu.org/software/automake/manual/html_node/Autotools-Introduction.html)
 though, so we must manually tweak the build process to do that.
 
 In what follows, I describe the necessary steps for compiling
 [GNU coreutils](http://www.gnu.org/software/coreutils/coreutils.html)
-so that we end up with a single ==LLVM bitcode== file per coreutil command
+so that we end up with a single LLVM bitcode file per coreutil command
 (instead of an executable file), but the process should be roughly the
 same for other autotooled software as well.
 
@@ -157,7 +157,7 @@ To recap:
     $ ./configure
     ~~~
 
-4. And now it's time to compile ==GNU coreutils== at last!
+4. And now it's time to compile GNU coreutils at last!
 
     ~~~ console
     $ make
@@ -185,3 +185,5 @@ To recap:
     > do [[ $(file -b $i) = "LLVM IR bitcode" ]] && cp $i ${i/src/out}.bc
     > done
     ~~~
+
+And now we are done!
