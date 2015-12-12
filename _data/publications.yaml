@@ -7,7 +7,7 @@
     - George Kastrinis
     - Martin Bravenboer
   conference: "APLAS '15"
-  pdf_link: https://yanniss.github.io/reflection-aplas15.pdf
+  pdf_link: https://zenodo.org/record/35286/files/reflection-aplas15.pdf
   abstract: |
     Reflection is a highly dynamic language feature that poses grave
     problems for static analyses. In the Java setting, reflection is
