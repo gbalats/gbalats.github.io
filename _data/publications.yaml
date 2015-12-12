@@ -33,7 +33,7 @@
     - Yannis Smaragdakis
     - George Balatsouras
   journal: "Foundations and Trends&#174; in Programming Languages 2015"
-  pdf_link: http://yanniss.github.io/points-to-tutorial15.pdf
+  pdf_link: https://zenodo.org/record/18142/files/points-to-tutorial15.pdf
   abstract: |
     Pointer analysis is a fundamental static program analysis, with a
     rich literature and wide applications. The goal of pointer
@@ -91,7 +91,7 @@
     - George Balatsouras
     - Yannis Smaragdakis
   conference: "OOPSLA '13"
-  pdf_link: http://yanniss.github.io/jphantom-oopsla13.pdf
+  pdf_link: https://zenodo.org/record/7731/files/jphantom-oopsla13.pdf
   pps_link: /assets/presentations/oopsla2013-jphantom.pdf
   abstract: |
     We present the problem of class hierarchy complementation: given a
@@ -121,7 +121,7 @@
     - George Balatsouras
     - George Kastrinis
   conference: "OOPSLA '13"
-  pdf_link: http://yanniss.github.io/set-based-oopsla13.pdf
+  pdf_link: https://zenodo.org/record/7733/files/set-based-oopsla13.pdf
   abstract: |
     We present set-based pre-analysis: a virtually universal
     optimization technique for flow-insensitive points-to
