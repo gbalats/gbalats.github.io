@@ -1,3 +1,31 @@
+- doi: "10.1007/978-3-319-26529-2_26"
+  title: >
+    More Sound Static Handling of Java Reflection
+  authors:
+    - Yannis Smaragdakis
+    - George Balatsouras
+    - George Kastrinis
+    - Martin Bravenboer
+  conference: "APLAS '15"
+  pdf_link: https://yanniss.github.io/reflection-aplas15.pdf
+  abstract: |
+    Reflection is a highly dynamic language feature that poses grave
+    problems for static analyses. In the Java setting, reflection is
+    ubiquitous in large programs. Any handling of reflection will be
+    approximate, and overestimating its reach in a large codebase can
+    be catastrophic for precision and scalability. We present an
+    approach for handling reflection with improved empirical soundness
+    (as measured against prior approaches and dynamic information) in
+    the context of a points-to analysis.  Our approach is based on the
+    combination of string-flow and points-to analysis from past
+    literature augmented with (a) substring analysis and modeling of
+    partial string flow through string builder classes; (b) new
+    techniques for analyzing reflective entities based on information
+    available at their use-sites. In experimental comparisons with
+    prior approaches, we demonstrate a combination of both improved
+    soundness (recovering the majority of missing call-graph edges)
+    and increased performance.
+
 - doi: "10.1561/2500000014"
   title: >
     Pointer Analysis
