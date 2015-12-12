@@ -6,19 +6,22 @@ width:
   - col-lg-10
 sections:
   - title: About Me
-    handle: about
+    link: "#about"
 
   - title: Projects
-    handle: projects
+    link: "#projects"
 
   - title: Publications
-    handle: publ
+    link: "#publ"
 
   - title: All Things Emacs
-    handle: emacs
+    link: "#emacs"
+
+  - title: Blog
+    link: "#blog"
 
   - title: Contact Me
-    handle: contact
+    link: "#contact"
 
 ---
 
@@ -180,7 +183,7 @@ sections:
       <h4>Added Feature Updates:</h4>
       <ol>
         <li>
-          Comment *Do What I Mean* plus movement commands (by clause).
+          Comment *Do What I Mean* plus movement commands (by clause or atom).
         </li>
         <li>
           Better integration with the <code>*compilation*</code>
@@ -190,10 +193,35 @@ sections:
           <a href="https://github.com/magnars/expand-region.el">Expand-region</a>
           support (clause expansion).
         </li>
+        <li>
+          Workspace specific commands (attaching to a workspace,
+          adding logic, or performing a query).
+        </li>
+        <li>
+          Some custom <a href="https://github.com/capitaomorte/yasnippet">snippets</a>.
+        </li>
       </ol>
 
     </div><!-- /emacs -->
   </div><!-- /.sect -->
+
+  <!-- ========== BLOG SECTION ========== -->
+  <div class="row sect">
+    <div id="blog" class="{{ page.width | join: ' ' }}">
+      <div class="page-header">
+        <h2>LATEST POSTS</h2>
+      </div> <!-- /.page-header -->
+
+      <ul class="posts">
+        {% for post in site.posts limit:20 %}
+        <li>
+          <span>{{ post.date | date_to_string }}</span> &raquo;
+          <a href="{{ post.url | prepend: site.baseurl }}" >{{ post.title }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
 
   <!-- ========== CONTACT SECTION ========== -->
   <div class="row sect">

@@ -8,23 +8,30 @@
 
       {% include sidebar.html %}
 
-      <!-- Page Content -->
+      <!-- Page Content (this is required due to the sidebar) -->
       <div id="page-content-wrapper">
+
         <div class="container-fluid">
-          <div class="row sect">
+          <div class="row">
             <div class="{{ page.width | join: ' ' }}">
 
-              <!-- Head title -->
-              <div class="page-header">
-                <h2>{{ page.title }}</h2>
+              <!-- Post content -->
+              <div class="post-content">
+
+                <!-- Head title -->
+                <div class="post-header">
+                  <h2 class="post-title">{{ page.title }}</h2>
+                </div>
+
+                {{ content }}
               </div>
 
-              {{ content }}
-
+              <!-- Disqus footer -->
               {% include disqus.html %}
             </div>
           </div>
         </div>
+
       </div><!-- /#page-content-wrapper -->
 
     </div><!-- /#wrapper -->

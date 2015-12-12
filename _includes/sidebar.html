@@ -6,9 +6,12 @@
     </li>
     {% for section in page.sections %}
     <li>
-      <a data-scroll href="#{{ section.handle }}">
-        {{ section.title }}
-      </a>
+      {% assign prefix = section.link |  split: "#" | first %}
+      {% if prefix == "" %}
+        <a data-scroll href="{{ section.link }}">{{ section.title }}</a>
+      {% else %}
+        <a href="{{ section.link }}">{{ section.title }}</a>
+      {% endif %}
     </li>
     {% endfor %}
 
