@@ -147,11 +147,15 @@ To recap:
    which generated *both* an executable and a bitcode file. I do not
    see such an option at `LLVM 3.7.0`, however. Had it been there, we
    could just set the `LDFLAGS` to its final value *before* calling
-   `./configure`, and skip the previous step entirely. That is:
+   `./configure`, and leave `Makefile` unchanged.
+
+    ==UPDATE== Turns out this option still exists but has been renamed
+    to `save-temps`. So if you want to create both normal executables
+    and bitcode files, skip the previous step and try instead:
 
     ~~~ console
     $ ...
-    $ export LDFLAGS=" -flto -fuse-ld=gold  -Wl,-plugin-opt=also-emit-llvm "
+    $ export LDFLAGS=" -flto -fuse-ld=gold  -Wl,-plugin-opt=save-temps "
     $ ./configure
     ~~~
 
