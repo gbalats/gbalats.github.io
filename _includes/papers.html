@@ -7,7 +7,7 @@
       {% if paper.url %}
       <a href="{{ paper.url }}">{{ paper.title }}</a>
       {% else %}
-      <a href="{{ paper.doi | prepend:'http://dl.acm.org/citation.cfm?id=' }}">{{ paper.title }}</a>
+      <a href="{{ paper.doi | prepend:'http://dx.doi.org/' }}">{{ paper.title }}</a>
       {% endif %}
       <!-- Toggle Abstract Button -->
       <a class="btn toggle-abstract" data-toggle="collapse"
