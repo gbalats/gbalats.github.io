@@ -11,15 +11,11 @@ lastfm_username: gbalats
 disqus_shortname: gbalats
 
 # Build settings
-markdown: redcarpet
-redcarpet:
-    extensions: [
-        "smart",
-        "tables",
-        "no_intra_emphasis",
-        "with_toc_data",
-        "highlight"
-    ]
+markdown: kramdown
+highlighter: rouge
+
+kramdown:
+  input: GFM
 
 # Sass settings
 sass:

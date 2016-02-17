@@ -50,11 +50,9 @@ same for other autotooled software as well.
 
 2. Verify that `ld.gold` accepts *plugin* arguments by running:
 
-    ~~~
-    $ ld.gold -plugin
-    ~~~
+       $ ld.gold -plugin
 
-    You should see a warning such as `-plugin: missing argument`.
+   You should see a warning such as `-plugin: missing argument`.
 
 3. Verify that your LLVM installation contains the
    [gold plugin](http://llvm.org/docs/GoldPlugin.html) (look for
@@ -126,22 +124,18 @@ To recap:
 
 1. Setup your environment and run `./configure`.
 
-    ~~~ console
-    $ export CC=clang
-    $ export CXX=clang++
-    $ export RANLIB=llvm-ranlib
-    $ export CFLAGS=" -flto -std=gnu99 "
-    $ export LDFLAGS=" -flto -fuse-ld=gold "
-    $ ./configure
-    ~~~
+        $ export CC=clang
+        $ export CXX=clang++
+        $ export RANLIB=llvm-ranlib
+        $ export CFLAGS=" -flto -std=gnu99 "
+        $ export LDFLAGS=" -flto -fuse-ld=gold "
+        $ ./configure
 
 2. Open the generated `Makefile`, locate the initialization of the
    `LDFLAGS` variable, and change it so that it includes the plugin
    option to emit LLVM bitcode. It should now look like:
 
-    ~~~ make
-    LDFLAGS =  -flto -fuse-ld=gold -Wl,-plugin-opt=emit-llvm
-    ~~~
+        LDFLAGS =  -flto -fuse-ld=gold -Wl,-plugin-opt=emit-llvm
 
 3. At some point, there used to be an `also-emit-llvm` plugin option,
    which generated *both* an executable and a bitcode file. I do not
@@ -149,21 +143,17 @@ To recap:
    could just set the `LDFLAGS` to its final value *before* calling
    `./configure`, and leave `Makefile` unchanged.
 
-    ==UPDATE== Turns out this option still exists but has been renamed
-    to `save-temps`. So if you want to create both normal executables
-    and bitcode files, skip the previous step and try instead:
+   **UPDATE** Turns out this option still exists but has been renamed
+   to `save-temps`. So if you want to create both normal executables
+   and bitcode files, skip the previous step and try instead:
 
-    ~~~ console
-    $ ...
-    $ export LDFLAGS=" -flto -fuse-ld=gold  -Wl,-plugin-opt=save-temps "
-    $ ./configure
-    ~~~
+        $ ...
+        $ export LDFLAGS=" -flto -fuse-ld=gold  -Wl,-plugin-opt=save-temps "
+        $ ./configure
 
 4. And now it's time to compile GNU coreutils at last!
 
-    ~~~ console
-    $ make
-    ~~~
+        $ make
 
     The build may fail at some point near the testing stage, but it should
     have already generated all our precious *whole-program* LLVM
@@ -172,20 +162,16 @@ To recap:
 5. Verify that this is indeed the case by sampling the
    `src/` directory. E.g.:
 
-    ~~~ console
-    $ file src/who
-    src/who: LLVM IR bitcode
-    ~~~
+        $ file src/who
+        src/who: LLVM IR bitcode
 
 6. (Optional) To rename all the whole-program generated bitcode files
    (adding the standard `.bc` suffix) and gather them to some `out/`
    directory, run:
 
-    ~~~ console
-    $ mkdir out/
-    $ for i in `find src/ -type f -not -name '*.o' -maxdepth 1`
-    > do [[ $(file -b $i) = "LLVM IR bitcode" ]] && cp $i ${i/src/out}.bc
-    > done
-    ~~~
+        $ mkdir out/
+        $ for i in `find src/ -type f -not -name '*.o' -maxdepth 1`
+        > do [[ $(file -b $i) = "LLVM IR bitcode" ]] && cp $i ${i/src/out}.bc
+        > done
 
 And now we are done!
