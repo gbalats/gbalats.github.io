@@ -74,6 +74,13 @@ $(function() {
 });
 
 
+$(function() {
+    $('#cclyzerModal').modal({
+        show: false,
+        backdrop : true,
+        keyboard : true
+    });
+});
 
 // Display icon text
 $(function() {

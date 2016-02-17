@@ -22,6 +22,9 @@ sections:
 
   - title: Contact Me
     link: "#contact"
+cclyzer:
+   link: https://docs.google.com/presentation/d/19TuSFwF-SlpNMoVwF3F4LLFX-bC6kzamNsuCQ6XoC7I/pub?start=false&loop=false&delayms=3000
+   embed: https://docs.google.com/presentation/d/19TuSFwF-SlpNMoVwF3F4LLFX-bC6kzamNsuCQ6XoC7I/embed?start=false&loop=false&delayms=3000   
 
 ---
 
@@ -92,20 +95,42 @@ sections:
       </p>
 
 
-      <h3>LLVM Datalog</h3>
+      <h3>CCLYZER</h3>
 
       <p>This project is still at its early stages but, in the long
         run, it aims to host various analyses written in Datalog for
         C/C++ programs, or generally any LLVM bitcode generating
-        language.
+        language. Right now it provides a context-insensitive pointer
+        analysis and is able to recover most of the C++ source
+        information, like v-tables, class hierarchy, etc, and resolve
+        virtual calls with reasonable precision.
       </p>
 
       <p>Unfortunately, even though the project is open source
-        and <a href="https://github.com/plast-lab/llvm-datalog">hosted
+        and <a href="https://github.com/plast-lab/cclyzer">hosted
         on github</a>, it requires the
         proprietary <a href="http://www.logicblox.com/">LogicBlox
         Engine</a> to be able to run.
       </p>
+
+      <p>
+        There is also a
+        <a href="{{ page.cclyzer.link }}" data-toggle="modal" data-target="#cclyzerModal">
+          presentation
+        </a>
+        about the basic ideas behind cclyzer's design and modeling of
+        its pointer analysis.
+      </p>
+
+      <!-- cclyzer presentation -->
+      <div class="modal fade" id="cclyzerModal" aria-hidden="true">
+        <div class="modal-dialog">
+          <iframe src="{{ page.cclyzer.embed }}" frameborder="0"
+                  allowfullscreen="true" mozallowfullscreen="true"
+                  webkitallowfullscreen="true">
+          </iframe>
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
 
     </div>   <!-- /#portfolio -->
   </div> <!-- /.sect -->
