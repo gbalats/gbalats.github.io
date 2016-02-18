@@ -135,7 +135,9 @@ To recap:
    `LDFLAGS` variable, and change it so that it includes the plugin
    option to emit LLVM bitcode. It should now look like:
 
-        LDFLAGS =  -flto -fuse-ld=gold -Wl,-plugin-opt=emit-llvm
+    ```make
+    LDFLAGS =  -flto -fuse-ld=gold -Wl,-plugin-opt=emit-llvm
+    ```
 
 3. At some point, there used to be an `also-emit-llvm` plugin option,
    which generated *both* an executable and a bitcode file. I do not
