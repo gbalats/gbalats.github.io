@@ -50,7 +50,9 @@ same for other autotooled software as well.
 
 2. Verify that `ld.gold` accepts *plugin* arguments by running:
 
-       $ ld.gold -plugin
+   ```shell
+   $ ld.gold -plugin
+   ```
 
    You should see a warning such as `-plugin: missing argument`.
 
@@ -70,12 +72,12 @@ generator. In order to build the gold plugin, you also need to specify
 the path to `plugin-api.h` of *binutils* (which you may also need to
 build). The command to build LLVM should be something similar to:
 
-~~~ console
+```shell
 $ cd /path/to/llvm/
 $ mkdir build
 $ cd build
 $ cmake -G "Unix Makefiles" -DLLVM_BINUTILS_INCDIR=/path/to/binutils/include ../llvm/
-~~~
+```
 
 Building will take a long time, but when it is over it should have created
 `lib/LLVMgold.so`.
@@ -87,14 +89,14 @@ LLVM bitcode file instead of an object file. Then you need to pass the
 generates bitcode instead of an executable. Test the previous scenario
 on a trivial single file C project by running:
 
-~~~ console
+```shell
 $ clang -flto -c test.c
 $ file test.o
 test.o: LLVM IR bitcode
 $ clang -flto -fuse-ld=gold -Wl,-plugin-opt=emit-llvm test.o
 $ file a.out
 a.out: LLVM IR bitcode
-~~~
+```
 
 
 ### Building GNU coreutils with GNU autoconf ###
@@ -124,20 +126,22 @@ To recap:
 
 1. Setup your environment and run `./configure`.
 
-        $ export CC=clang
-        $ export CXX=clang++
-        $ export RANLIB=llvm-ranlib
-        $ export CFLAGS=" -flto -std=gnu99 "
-        $ export LDFLAGS=" -flto -fuse-ld=gold "
-        $ ./configure
+   ```shell
+   $ export CC=clang
+   $ export CXX=clang++
+   $ export RANLIB=llvm-ranlib
+   $ export CFLAGS=" -flto -std=gnu99 "
+   $ export LDFLAGS=" -flto -fuse-ld=gold "
+   $ ./configure
+   ```
 
 2. Open the generated `Makefile`, locate the initialization of the
    `LDFLAGS` variable, and change it so that it includes the plugin
    option to emit LLVM bitcode. It should now look like:
 
-    ```make
-    LDFLAGS =  -flto -fuse-ld=gold -Wl,-plugin-opt=emit-llvm
-    ```
+   ```make
+   LDFLAGS =  -flto -fuse-ld=gold -Wl,-plugin-opt=emit-llvm
+   ```
 
 3. At some point, there used to be an `also-emit-llvm` plugin option,
    which generated *both* an executable and a bitcode file. I do not
@@ -149,13 +153,17 @@ To recap:
    to `save-temps`. So if you want to create both normal executables
    and bitcode files, skip the previous step and try instead:
 
-        $ ...
-        $ export LDFLAGS=" -flto -fuse-ld=gold  -Wl,-plugin-opt=save-temps "
-        $ ./configure
+   ```shell
+   $ ...
+   $ export LDFLAGS=" -flto -fuse-ld=gold  -Wl,-plugin-opt=save-temps "
+   $ ./configure
+   ```
 
 4. And now it's time to compile GNU coreutils at last!
 
-        $ make
+   ```shell
+   $ make
+   ```
 
     The build may fail at some point near the testing stage, but it should
     have already generated all our precious *whole-program* LLVM
@@ -164,16 +172,20 @@ To recap:
 5. Verify that this is indeed the case by sampling the
    `src/` directory. E.g.:
 
-        $ file src/who
-        src/who: LLVM IR bitcode
+   ```shell
+   $ file src/who
+   src/who: LLVM IR bitcode
+   ```
 
 6. (Optional) To rename all the whole-program generated bitcode files
    (adding the standard `.bc` suffix) and gather them to some `out/`
    directory, run:
 
-        $ mkdir out/
-        $ for i in `find src/ -type f -not -name '*.o' -maxdepth 1`
-        > do [[ $(file -b $i) = "LLVM IR bitcode" ]] && cp $i ${i/src/out}.bc
-        > done
+   ```shell
+   $ mkdir out/
+   $ for i in `find src/ -type f -not -name '*.o' -maxdepth 1`
+   > do [[ $(file -b $i) = "LLVM IR bitcode" ]] && cp $i ${i/src/out}.bc
+   > done
+   ```
 
 And now we are done!
