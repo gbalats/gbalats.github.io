@@ -1,0 +1,466 @@
+---
+title: Datalog Macro-Constructors
+layout: post
+disqus_id: 16253
+comments: true
+width:
+  - col-xs-12
+  - col-md-11 col-md-offset-1
+  - col-lg-7
+sections:
+  - title: About Me
+    link: "/#about"
+  - title: Projects
+    link: "/#projects"
+  - title: Publications
+    link: "/#publ"
+  - title: All Things Emacs
+    link: "/#emacs"
+  - title: Blog
+    link: "/#blog"
+  - title: Contact Me
+    link: "/#contact"
+
+---
+
+[CClyzer](https://github.com/plast-lab/cclyzer) has been my main
+project for some time now, and I've been pondering quite a while about
+adding context-sensitivity to it.
+
+The **_merge_** and **_record_** functions (described
+in [Pick Your Contexts Well: Understanding Object-Sensitivity][popl])
+are a very useful abstraction to parameterize
+context-sensitivity.  [Doop][] has been using them extensively, to
+obtain limitless analysis variations (w.r.t. context-sensitivity),
+without requiring any changes in the core analysis logic. Since both
+CClyzer and Doop are written in Datalog (and are very similar in their
+analysis logic), this abstraction seems a very good fit.
+
+The main idea of this abstraction is that there are primarily two
+places where one needs to create contexts:
+
+1. At function calls---where you should use **_merge_**
+2. At memory allocation instructions---where you should use **_record_**
+
+
+So, by supplying the appropriate definitions of **_merge_** and
+**_record_** you can get various flavors of context-sensitivity (e.g.,
+call-site sensitivity, object sensitivity, type sensitivity ... you
+name it). I'm not gonna explain the differences of these variations
+here---anyone who wants to dig deeper can take a look at
+these [slides][popl-slides].
+
+This post is more about how this concept of **_merge_** and **_record_**
+functions can be implemented in Datalog (or to be more precise, in the
+LogicBlox engine's dialect of Datalog, with its constructor extensions
+and so on).
+
+
+### Background: Context-Sensitivity in Datalog
+
+In a context-sensitive analysis for Java, the typical Datalog rule
+that would apply the **_merge_** function (the case for **_record_** is
+similar, so I'm not gonna show it) look very close to this:
+
+```prolog
+MERGE_MACRO(callerCtx, invocation, hctx, heap, calleeCtx),
+CallGraph:Edge(callerCtx, invocation, calleeCtx, tomethod),
+VarPointsTo(hctx, heap, calleeCtx, this)
+ <-
+  VarPointsTo(hctx, heap, callerCtx, base),
+  ReachableMethod(inmethod),
+  Instruction:Method[invocation] = inmethod,
+  VirtualMethodInvocation:Base[invocation] = base,
+  HeapAllocation:Type[heap] = heaptype,
+  VirtualMethodInvocation:Name[invocation] = name,
+  VirtualMethodInvocation:Signature[invocation] = signature,
+  MethodLookup[name, signature, heaptype] = tomethod,
+  Method:ThisVar[tomethod] = this.
+```
+
+whereas the corresponding *context-insensitive* version of this rule
+would look like:
+
+```prolog
+CallGraph:Edge(invocation, tomethod),
+VarPointsTo(heap, this)
+ <-
+  VarPointsTo(heap, base),
+  ReachableMethod(inmethod),
+  Instruction:Method[invocation] = inmethod,
+  VirtualMethodInvocation:Base[invocation] = base,
+  HeapAllocation:Type[heap] = heaptype,
+  VirtualMethodInvocation:Name[invocation] = name,
+  VirtualMethodInvocation:Signature[invocation] = signature,
+  MethodLookup[name, signature, heaptype] = tomethod,
+  Method:ThisVar[tomethod] = this.
+```
+
+Let's look at the 2nd rather simplified version, to get a grip of
+what's going on.  This rule basically states the following:
+
+* at a virtual method invocation instruction, `invocation`, inside method `inmethod`
+* which has been already inferred to be reachable by the analysis
+  (`ReachableMethod(inmethod)`)
+* if the receiver of the call (`base`) points to some heap object
+  `heap` with dynamic type `heaptype`, and
+* the method being called, given its `name` and `signature`,
+  *dynamically dispatches* to `tomethod`
+
+Then:
+
+* we can infer that `this` will point to object `heap`, and
+* record a call-graph edge from the given `invocation` instruction to
+  `tomethod`
+
+
+The difference in the context-sensitive setting is that the
+`VarPointsTo` and `CallGraph:Edge` predicates will be augmented with
+extra context arguments. So, where the analysis inferred that variable
+`base` points to abstract object `heap`, it now instead infers that
+variable `base` under context `callerCtx` points to the `(heap, hctx)`
+pair. Likewise, a call-graph edge should connect an invocation
+instruction under some calling context `(invocation, callerCtx)`, with
+the method being called and its callee context `(tomethod,
+calleeCtx)`.
+
+```prolog
+MERGE_MACRO(callerCtx, invocation, hctx, heap, calleeCtx),
+CallGraph:Edge(callerCtx, invocation, calleeCtx, tomethod), <-----------
+VarPointsTo(hctx, heap, calleeCtx, this) <-----------
+ <-
+  VarPointsTo(hctx, heap, callerCtx, base), <-----------
+  ReachableMethod(inmethod),
+  Instruction:Method[invocation] = inmethod,
+  VirtualMethodInvocation:Base[invocation] = base,
+  HeapAllocation:Type[heap] = heaptype,
+  VirtualMethodInvocation:Name[invocation] = name,
+  VirtualMethodInvocation:Signature[invocation] = signature,
+  MethodLookup[name, signature, heaptype] = tomethod,
+  Method:ThisVar[tomethod] = this.
+```
+
+However, the *callee context* depends on the flavor of
+context-sensitivity chosen, and that's where the **_merge_** function
+comes in. So, given a number of possible arguments, only some of whom
+will be used eventually, **_merge_** creates a possible new callee
+context and returns it (through its last argument).
+
+Note here that the `calleeCtx` variable is *existentially-quantified*:
+it only appears in the rule's head and is not bound anywhere in the
+rule's body. Such a thing is not possible with vanilla Datalog. LB
+Datalog's constructors, though, is a mechanism that can facilitate
+such a need, since it can be used to create new non-existing entities
+and return them via existentially-quantified variables.
+
+### LB Datalog Constructors
+
+In LB Datalog, you define a constructor as follows:
+
+```prolog
+Context(ctx) -> .
+
+Context:New[invoc1, invoc2] = ctx ->
+   Instruction(invoc1), Instruction(invoc2), Context(ctx).
+
+lang:constructor(`Context:New).
+```
+
+The above states the `Context` is an entity predicate (a custom
+defined type) and that the constructor predicate `Context:New` can be
+used to create a new context `ctx`, given 2 invocation
+instructions. Just as in [algebraic data types][algebdt], the
+constructor and its arguments *uniquely identify* the entity they
+create. E.g., `Context:New` will create a *single* context at most,
+given a combination of invocation instructions---after the context is
+created, any subsequent calls to the constructor with the same
+arguments will yield the same existing context.
+
+In fact, one can declare multiple constructor predicates for the same
+entity (e.g., `Context`), and pattern match them via the constructor
+that was used to create them. Most importantly, a constructor clause
+in the head of a rule can create a new entity and bind it to an
+existentially quantified variable.
+
+So, suppose we were set on implementing our analysis using a fixed 2
+call-site sensitive approach. The rule for virtual method invocations
+would become:
+
+```prolog
+Context(calleeCtx), <------------
+Context:New[lastinvoc, invocation] = calleeCtx <------------
+CallGraph:Edge(callerCtx, invocation, calleeCtx, tomethod),
+VarPointsTo(hctx, heap, calleeCtx, this)
+ <-
+  VarPointsTo(hctx, heap, callerCtx, base),
+  ReachableMethod(inmethod),
+  Instruction:Method[invocation] = inmethod,
+  VirtualMethodInvocation:Base[invocation] = base,
+  HeapAllocation:Type[heap] = heaptype,
+  VirtualMethodInvocation:Name[invocation] = name,
+  VirtualMethodInvocation:Signature[invocation] = signature,
+  MethodLookup[name, signature, heaptype] = tomethod,
+  Method:ThisVar[tomethod] = this,
+  Context:New[_, lastinvoc] = callerCtx. <------------
+```
+
+Few things to note:
+
+* `calleeCtx` is existentially quantified since it is only bound in
+  the rule's head and not its body
+* the `Context(calleeCtx)` clause is needed too, besides the
+  constructor clause---in general new entities created by constructors
+  must include 2 clauses in some rule's head, using the syntax:
+  
+  ```prolog
+  SomeEntity(X), SomeEntity:Constructor[...] = X
+  ```
+
+* `Context:New` is used in the rule's body to pattern match (caller)
+  contexts that were created using this constructor and get the 2nd
+  invocation (which was used as constructor argument)
+* `Context:New` is used in the rule's head to create a (new) callee
+  context by appending the current invocation instruction to all but
+  the first (in the case of 2 call-site sensitivity, it is just one)
+  invocation elements of the caller context
+
+This is all valid LB Datalog code. However, without **_merge_** this
+approach lacks the genericity of supporting many different kinds of
+contexts, and is fixed on 2 call-site sensitivity.
+
+### The Case For Macros
+
+Could we use constructor predicates for implementing the **_merge_** and
+**_record_** functions in pure LB Datalog?
+
+First, they seem syntactically similar, since both create an entity
+and bind it to an existentially quantified variable. As constructors,
+**_merge_** and **_record_** would look like this:
+
+```prolog
+Merge[callerCtx, invocation, hctx, heap] = calleeCtx ->
+   Context(callerCtx), Context(calleeCtx),
+   Instruction(invocation), HeapContext(hctx), Heap(heap).
+
+Record[ctx, heap] = hctx ->
+   Context(ctx), Heap(heap), HeapContext(hctx).
+```
+
+However, despite their syntactic similarity they differ significantly
+in their meaning. For one thing, **_merge_** and **_record_** do *not* need
+*all* their arguments to uniquely identify a context. For instance, in
+2 call-site sensitivity, **_merge_** only needs the `callerCtx` and
+`invocation`. In other kinds of context-sensitivity, another subset of
+arguments would be needed.
+
+Constructors are not able to express this need: the entirety of their
+arguments are used as is, to uniquely identify the context
+created. Two invocations with different `hctx` argument will always
+create different contexts.
+
+Also, even if we could choose which arguments to ignore, we would
+probably still need more flexibility than that. To achieve 2 call-site
+sensitivity, we should be able to pattern match the `callerCtx`
+argument with its constructor (`Context:New`), to extract the 2
+invocations that created it, and use just the 2nd invocation along
+with the current one to create our new context. This is already
+demonstrated in the code of the previous section.
+
+Since these features are not provided by LB Datalog, [Doop][] uses the
+[C macro preprocessor][cpp] to implement this functionality.
+
+Using macros, **_merge_** could be defined in the following way for 2
+call-site sensitivity:
+
+```cpp
+#define MergeMacro(callerCtx, invocation, hctx, heap, calleeCtx) \
+  Context(calleeCtx), \
+  Context:New[Context:LastInvoc[callerCtx], invocation] = calleeCtx
+```
+
+where `Context:LastInvoc` is defined so as to return the last
+invocation from the constructor arguments:
+
+```prolog
+Context:LastInvoc[ctx] = invoc <-
+   Context:New[_, invoc] = ctx.
+```
+
+Many kinds of context-sensitivity can be defined by supplying the
+relevant macro-definitions for **_merge_** and **_record_**.
+
+### The Case Against Macros
+
+The thing is that we want to be able to *choose what
+context-sensitivity to use*, when the analysis *runs*. Hence, Doop's use
+of the C preprocessor is certainly out of the norm, since it is used
+to transform the analysis logic at runtime, by applying different
+macro-substitutions, depending on the choice of the user (normally,
+through some command-line option).
+
+This rather hackish strategy has several drawbacks:
+
+1. Doop cannot easily compile its logic using the LB Datalog compiler,
+   since the macro-substitutions have not been performed yet, at
+   compile time.
+2. Instead of having a pure LB Datalog syntax, we end up with an
+   unorthodox Datalog+CPP blend that breaks syntax highlighting and
+   limits tool support.
+3. Line Control: if we are not too careful with our macro definitions,
+   the error lines reported will be out of whack.
+4. The approach is limited, and for some cases more macro hacks are
+   needed to support a new kind of context.
+5. The analysis workflow gets burdened with this extra step of
+   applying macro-substitutions (otherwise, the analysis tool would
+   not need a preprocessor at all).
+6. Since we lack tool support, we cannot use LB Datalog's compiler and
+   module mechanism (via *projects*) to modularize the analysis
+   logic. The current solution? More macro hacks with `#include`
+   directives to create giant logic files that combine many separate
+   logic files and further mess up our lines!
+
+This is not a comprehensive list. Since, [Doop][] was not designed to
+be able to compile its analysis logic in the first place, some points
+did not seem to matter at the time. But having worked on [Doop][], not
+being able to compile your logic leads to huge productivity waste by
+waiting for several seconds for the analysis to fail at runtime with
+some compile error, over and over again.
+
+
+### Macro-Constructor Predicates
+
+There is another feature of LB Datalog that is relevant here. That is,
+*derived predicates*. When a predicate is declared to be derived, then
+the compiler will not store its contents to the database. Instead, it
+will inline its definition to its use sites.
+
+So, the following LB Datalog program:
+
+```prolog
+lang:derivationType[`Foo] = "Derived".
+
+Foo(x,y) <-
+    Bar(x,z), Bar(z,y).
+    
+Foobar(x,y) <-
+    Foo(x,y), Bar(x,y).
+```
+
+will be transformed to:
+
+```prolog
+Foobar(x,y) <-
+    Bar(x,z), Bar(z,y), Bar(x,y).
+```
+
+and no table will be created to store the contents of `Foo`. This is
+very handy when the derived predicate would be too large to store to
+the database.
+
+As one would expect, derived predicates have many restrictions: one is
+that constructors cannot be declared to be derived. This makes sense,
+since a constructor creates a new entity. It would serve no purpose if
+we did not store it to the database.
+
+Semantically, what the compiler does here is that it performs a logical
+equivalence. In propositional logic:
+
+```
+a <= b
+c <= a /\ d
+```
+
+to
+
+```
+c <= a /\ d <= b /\ d
+c <= b /\ d
+```
+
+where `a` corresponds to the derived predicate, and is eventually
+eliminated. This is only one of the possible logical equivalences that
+could be exploited by the Datalog compiler. The following is a
+generilization, just as valid:
+
+```
+a /\ x <= b
+c <= a /\ d
+```
+
+to
+
+```
+c /\ x <= a /\ x /\ d <= b /\ d
+c /\ x <= b /\ d
+```
+
+
+Now imagine that `a` corresponds to the **_merge_** predicate and `c`
+to the actual constructor. How is this so different from:
+
+```prolog
+Merge[...] = calleeCtx,
+CallGraph:Edge(...)
+VarPointsTo(...)
+    <- 
+    ...body...
+
+Context:New[lastinvoc, invocation] = calleeCtx
+    <-
+    Merge[callerCtx, invocation, ...] = calleeCtx,
+    Context:New[_, lastinvoc] = callerCtx.
+```
+
+being transformed to:
+
+```prolog
+Context:New[lastinvoc, invocation] = calleeCtx,
+CallGraph:Edge(...)
+VarPointsTo(...)
+    <-
+    ...body...
+    Context:New[_, lastinvoc] = callerCtx.
+```
+
+It's the same logical equivalence being applied, only to constructors
+as well. It allows us to declare a pseudo-constructor predicate
+(i.e., `Merge`), which resembles a normal constructor predicate but
+its contents are not stored to the database (which is exactly what we
+want).
+
+Syntax-wise, all we need is a new language directive that specifies
+that a predicate is this pseudo-kind of constructor
+(macro-constructors). Other than that, everything else is
+syntactically valid LB Datalog code.
+
+It is somewhat counter-intuitive though, in the sense that uses of the
+`Merge` macro will seem like they end up creating new contexts. But if
+`Merge` was stored in the database, this behavior would be exactly
+what would happen: the `Merge` facts would be created by the first
+rule, and their creation would trigger the creation of `Context:New`
+facts due to the second rule. The transformation achieves the same end
+result semantically, without storing any `Merge` facts at all.
+
+Moreover, this extension seems much more powerful than its macro
+alternative. The macro definition of **_merge_** is much restricted,
+whereas with macro-constructors we can have rules of arbitrary
+complexity.
+
+Even more, we could supply many different rules of the 2nd form (the
+ones with an actual constructor in the head and the macro-constructor
+on their body) for the same macro-constructor. In such a case, the
+compiler should expand rules of the 1st form multiple times (one for
+each rule where the macro-constructor is used).
+
+We could even have complex context-sensitivity logic that creates
+contexts using different constructors, depending on some arbitrary
+criterion. The core logic (2nd form) stays the same: all we need is
+multiple 1st form rules for context. The possibilities seem endless.
+
+
+<!-- References and links -->
+[Doop]: http://doop.program-analysis.org/
+[popl]: https://yanniss.github.io/typesens-popl11.pdf
+[popl-slides]: http://www.cse.psu.edu/popl/11/Slides/yannis-popl11.pdf
+[algebdt]: https://en.wikipedia.org/wiki/Algebraic_data_type
+[cpp]: http://tigcc.ticalc.org/doc/cpp.html
