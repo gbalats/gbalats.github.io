@@ -529,6 +529,77 @@ same: all we need is to supply multiple 1st form macro-in-body rules
 that use different constructors in their head, to create context. The
 possibilities seem endless.
 
+In a practical scenario, suppose we were able to perform a
+preprocessing step that identified factory methods (either by some
+heuristic property about their structures or by some naming
+convention, e.g., those prefixed by `new`). It would make sense to
+give heap context to objects created therein, even when all other heap
+objects have no context at all.
+
+So let's take an ordinary *1 object sensitive analysis without heap
+context*:
+
+```prolog
+Context(ctx) -> .
+HeapContext(hctx) -> .
+
+Context:New[heap] = ctx ->
+   HeapAllocation(heap), Context(ctx).
+
+HeapContext:New[] = hctx ->
+   HeapContext(hctx).
+
+lang:constructor(`Context:New).
+lang:constructor(`HeapContext:New).
+
+Context:New[heap] = calleeCtx <-
+    Merge[_, _, hctx, heap] = calleeCtx,
+    HeapContext:New[] = hctx.
+
+HeapContext:New[] = hctx <-
+    Record[ctx, _] = hctx,
+    Context:New[_] = ctx.
+```
+
+and add heap context selectively, just to allocations inside factory
+methods:
+
+```prolog
+Context(ctx) -> .
+HeapContext(hctx) -> .
+
+Context:New[heap] = ctx ->
+   HeapAllocation(heap), Context(ctx).
+
+HeapContext:New0[] = hctx ->
+   HeapContext(hctx).
+
+HeapContext:New1[heap] = hctx ->
+   HeapAllocation(heap), HeapContext(hctx).
+
+lang:constructor(`Context:New).
+lang:constructor(`HeapContext:New0).
+lang:constructor(`HeapContext:New1).
+
+Context:New[heap] = calleeCtx <-
+    Merge[_, _, hctx, heap] = calleeCtx,
+    HeapContext:New[] = hctx.
+
+HeapContext:New0[] = hctx <-
+    Record[_, heap] = hctx,
+    AssignHeapAllocation:Heap[allocinstr] = heap,
+    Instruction:Method[allocinstr] = inmethod,
+    !FactoryMethod(inmethod).
+
+HeapContext:New1[lastheap] = hctx <-
+    Record[ctx, heap] = hctx,
+    AssignHeapAllocation:Heap[allocinstr] = heap,
+    Instruction:Method[allocinstr] = inmethod,
+    FactoryMethod(inmethod),
+    Context:New[lastheap] = ctx.
+
+```
+
 
 
 <!-- References and links -->
