@@ -178,7 +178,7 @@ arguments will yield the same existing context.
 
 In fact, one can declare multiple constructor predicates for the same
 entity (e.g., `Context`), and pattern match them via the constructor
-that was used to create them. Most importantly, a constructor clause
+that was used to create them. Most importantly, a constructor atom
 in the head of a rule can create a new entity and bind it to an
 existentially quantified variable.
 
@@ -208,9 +208,9 @@ Few things to note:
 
 * `calleeCtx` is existentially quantified since it is only bound in
   the rule's head and not its body
-* the `Context(calleeCtx)` clause is needed too, besides the
-  constructor clause---in general new entities created by constructors
-  must include 2 clauses in some rule's head, using the syntax:
+* the `Context(calleeCtx)` atom is needed too, besides the
+  constructor atom---in general new entities created by constructors
+  must include 2 atoms in some rule's head, using the syntax:
   
   ```prolog
   SomeEntity(X), SomeEntity:Constructor[...] = X
@@ -446,7 +446,7 @@ macro-constructor like `Merge` on their head) that look like they
 create new contexts. The context-sensitivity code would be decoupled
 from the core of the analysis, as rules of the 2nd form (the ones that
 include macro-constructors like `Merge` on their body and map them to
-some actual constructor on their head---the two clauses should also
+some actual constructor on their head---the two atoms should also
 return the same entity, e.g., `calleeCtx`).
 
 It is somewhat counter-intuitive though, in the sense that uses of the
@@ -585,12 +585,14 @@ Context:New[heap] = calleeCtx <-
     Merge[_, _, hctx, heap] = calleeCtx,
     HeapContext:New[] = hctx.
 
+# Rule a1
 HeapContext:New0[] = hctx <-
     Record[_, heap] = hctx,
     AssignHeapAllocation:Heap[allocinstr] = heap,
     Instruction:Method[allocinstr] = inmethod,
     !FactoryMethod(inmethod).
 
+# Rule a2
 HeapContext:New1[lastheap] = hctx <-
     Record[ctx, heap] = hctx,
     AssignHeapAllocation:Heap[allocinstr] = heap,
@@ -602,10 +604,56 @@ HeapContext:New1[lastheap] = hctx <-
 
 Notice that there are two actual heap context constructors
 (`HeapContext:New0` and `HeapContext:New1`) and two corresponding
-rules that use them to create heap contexts. The transformation should
-take every rule of the program with `Record` in its head, and replace
-it with two new rules that are the result of weaving each such rule
-with each of the two rules that create the actual context.
+rules, let's call them `a1` and `a2`, that use these constructors to
+create heap contexts. The transformation should take every rule, `r`,
+of the program (in the core analysis logic) with `Record` in its head,
+and replace `r` with two new rules that are the result of weaving `a1`
+and `a2` into `r`.
+
+
+### Implementation of Macro-Constructors
+
+There are many obvious constraints that the compiler should enforce,
+regarding macro-constructors. These come to mind...
+
+For rules that contain a macro-constructor atom in their bodies:
+
+* the head of the rule should contain an actual constructor atom
+* this atom and the macro-constructor one should bind the same
+  variable, as the returned created entity
+* we could even enforce the body of the rule to be an and-expression
+  and the head to contain only the constructor atom, just to make the
+  transformation easier, even though more flexibility could be
+  possible in some cases
+
+For rules that contain a macro-constructor atom in their head:
+
+* the macro-constructor atom should have the same restrictions as if
+  it were an ordinary constructor
+
+
+There is no major challenge in the transformation itself, but rather
+at the modularity of the approach. When should this transformation
+take place? When compiling a project or lazily at runtime? What if we
+add some logic that uses macro constructors, without providing the
+actual constructors yet?
+
+The following approach seems to achieve a good compromise:
+
+1. During compilation, we treat macro-constructors as regular
+   constructors, but mark them specially.
+2. We prohibit the addition of any logic that refers to
+   macro-constructors, without first having loaded the logic that
+   resolves them to the actual constructors.
+3. If we have already loaded such logic, we perform the transformation
+   each time we load additional logic that uses (macro-in-head) the
+   predefined macro-constructors, so as to completely eliminate them
+   from the actual logic to be added to the database.
+
+This way, our primary limitation will be that we'll have to provide
+and load definitions for the macro-constructors prior to adding any
+more logic---just as, in conventional languages, all symbols have to
+be resolved at link-time to produce an executable.
 
 
 <!-- References and links -->
