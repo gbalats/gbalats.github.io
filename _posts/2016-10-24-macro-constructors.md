@@ -600,6 +600,12 @@ HeapContext:New1[lastheap] = hctx <-
 
 ```
 
+Notice that there are two actual heap context constructors
+(`HeapContext:New0` and `HeapContext:New1`) and two corresponding
+rules that use them to create heap contexts. The transformation should
+take every rule of the program with `Record` in its head, and replace
+it with two new rules that are the result of weaving each such rule
+with each of the two rules that create the actual context.
 
 
 <!-- References and links -->
