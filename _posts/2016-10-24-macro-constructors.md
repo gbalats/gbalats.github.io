@@ -240,10 +240,10 @@ and bind it to an existentially quantified variable. As constructors,
 ```prolog
 Merge[callerCtx, invocation, hctx, heap] = calleeCtx ->
    Context(callerCtx), Context(calleeCtx),
-   Instruction(invocation), HeapContext(hctx), Heap(heap).
+   Instruction(invocation), HeapContext(hctx), HeapAllocation(heap).
 
 Record[ctx, heap] = hctx ->
-   Context(ctx), Heap(heap), HeapContext(hctx).
+   Context(ctx), HeapAllocation(heap), HeapContext(hctx).
 ```
 
 However, despite their syntactic similarity they differ significantly
@@ -327,7 +327,7 @@ waiting for several seconds for the analysis to fail at runtime with
 some compile error, over and over again.
 
 
-### Macro-Constructor Predicates
+### Derived Predicates
 
 There is another feature of LB Datalog that is relevant here. That is,
 *derived predicates*. When a predicate is declared to be derived, then
@@ -362,40 +362,42 @@ that constructors cannot be declared to be derived. This makes sense,
 since a constructor creates a new entity. It would serve no purpose if
 we did not store it to the database.
 
-Semantically, what the compiler does here is that it performs a logical
-equivalence. In propositional logic:
+### Beyond Derived Predicates: Macro-Constructors
+
+Semantically, what the compiler does in the case of derived predicates
+is that it performs a logical equivalence. In propositional logic:
 
 ```
-a <= b
-c <= a /\ d
+d <= b
+a <= d /\ c
 ```
 
 to
 
 ```
-c <= a /\ d <= b /\ d
-c <= b /\ d
+a <= d /\ c <= b /\ c
+a <= b /\ c
 ```
 
-where `a` corresponds to the derived predicate, and is eventually
+where `d` corresponds to the derived predicate, and is eventually
 eliminated. This is only one of the possible logical equivalences that
 could be exploited by the Datalog compiler. The following is a
-generilization, just as valid:
+generalization, just as valid:
 
 ```
-a /\ x <= b
-c <= a /\ d
+d /\ x <= b
+a <= d /\ c
 ```
 
 to
 
 ```
-c /\ x <= a /\ x /\ d <= b /\ d
-c /\ x <= b /\ d
+a /\ x <= d /\ x /\ c <= b /\ c
+a /\ x <= b /\ c
 ```
 
 
-Now imagine that `a` corresponds to the **_merge_** predicate and `c`
+Now imagine that `d` corresponds to the **_merge_** predicate and `a`
 to the actual constructor. How is this so different from:
 
 ```prolog
@@ -423,15 +425,29 @@ VarPointsTo(...)
 ```
 
 It's the same logical equivalence being applied, only to constructors
-as well. It allows us to declare a pseudo-constructor predicate
-(i.e., `Merge`), which resembles a normal constructor predicate but
-its contents are not stored to the database (which is exactly what we
-want).
+as well. It allows us to declare a pseudo-constructor predicate (i.e.,
+`Merge`), which resembles a normal constructor but its contents are
+not stored to the database (which is exactly what we want---just like
+derived predicates). Instead, *another rule* (like the second one)
+that uses an actual constructor on its head *creates the entities*, by
+being automatically *weaved* into all the rules (like the first one)
+that *seemed* to create them via the pseudo-constructor.
 
-Syntax-wise, all we need is a new language directive that specifies
-that a predicate is this pseudo-kind of constructor
-(macro-constructors). Other than that, everything else is
-syntactically valid LB Datalog code.
+Syntax-wise, all we need is a new language directive that declares a
+predicate to be of this pseudo-constructor kind (lets call it
+*macro-constructors* for now). Other than that, everything else is
+syntactically valid LB Datalog code. The compiler will make the
+transformation under the hood, pretty much the same way it handles
+derived predicates.
+
+So in the realm of static analysis, the core of the analysis itself
+would comprise rules of the 1st form (the ones that include a
+macro-constructor like `Merge` on their head) that look like they
+create new contexts. The context-sensitivity code would be decoupled
+from the core of the analysis, as rules of the 2nd form (the ones that
+include macro-constructors like `Merge` on their body and map them to
+some actual constructor on their head---the two clauses should also
+return the same entity, e.g., `calleeCtx`).
 
 It is somewhat counter-intuitive though, in the sense that uses of the
 `Merge` macro will seem like they end up creating new contexts. But if
@@ -441,21 +457,78 @@ rule, and their creation would trigger the creation of `Context:New`
 facts due to the second rule. The transformation achieves the same end
 result semantically, without storing any `Merge` facts at all.
 
-Moreover, this extension seems much more powerful than its macro
-alternative. The macro definition of **_merge_** is much restricted,
-whereas with macro-constructors we can have rules of arbitrary
-complexity.
 
-Even more, we could supply many different rules of the 2nd form (the
-ones with an actual constructor in the head and the macro-constructor
-on their body) for the same macro-constructor. In such a case, the
-compiler should expand rules of the 1st form multiple times (one for
-each rule where the macro-constructor is used).
+### More Contexts
+
+By having decoupled the core analysis logic, it is very easy to create
+a new context-sensitivity variant, using macro-constructors.
+
+For *2 call-site sensitivity + 1 heap context*, here's all we need:
+
+```prolog
+Context(ctx) -> .
+HeapContext(hctx) -> .
+
+Context:New[invoc1, invoc2] = ctx ->
+   Instruction(invoc1), Instruction(invoc2), Context(ctx).
+
+HeapContext:New[invoc] = hctx ->
+   Instruction(invoc), HeapContext(hctx).
+
+lang:constructor(`Context:New).
+lang:constructor(`HeapContext:New).
+
+Context:New[lastinvoc, invocation] = calleeCtx <-
+    Merge[callerCtx, invocation, _, _] = calleeCtx,
+    Context:New[_, lastinvoc] = callerCtx.
+
+HeapContext:New[lastinvoc] = hctx <-
+    Record[ctx, _] = hctx,
+    Context:New[_, lastinvoc] = ctx.
+```
+
+For *2 object sensitivity + 2 heap context*:
+
+```prolog
+Context(ctx) -> .
+HeapContext(hctx) -> .
+
+Context:New[heap1, heap2] = ctx ->
+   HeapAllocation(heap1), HeapAllocation(heap2), Context(ctx).
+
+HeapContext:New[heap1, heap2] = hctx ->
+   HeapAllocation(heap1), HeapAllocation(heap2), HeapContext(hctx).
+
+lang:constructor(`Context:New).
+lang:constructor(`HeapContext:New).
+
+Context:New[lastheap, heap] = calleeCtx <-
+    Merge[_, _, hctx, heap] = calleeCtx,
+    HeapContext:New[_, lastheap] = hctx.
+
+HeapContext:New[heap1, heap2] = hctx <-
+    Record[ctx, _] = hctx,
+    Context:New[heap1, heap2] = ctx.
+```
+
+There is more to macro-constructors than just elegantly expressing
+all the existing [Doop][] contexts.  The macro definition of
+**_merge_** is much restricted, whereas with macro-constructors we can
+have rules of arbitrary complexity.
+
+We could, for instance, supply many different 2nd form (macro-in-body)
+rules for the same macro-constructor. In such a case, the compiler
+should expand rules of the 1st form (macro-in-head) multiple times
+(one for each relevant macro-in-body rule of the given
+macro-constructor).
 
 We could even have complex context-sensitivity logic that creates
 contexts using different constructors, depending on some arbitrary
-criterion. The core logic (2nd form) stays the same: all we need is
-multiple 1st form rules for context. The possibilities seem endless.
+criterion. The core logic (2nd form, macro-in-head rules) stays the
+same: all we need is to supply multiple 1st form macro-in-body rules
+that use different constructors in their head, to create context. The
+possibilities seem endless.
+
 
 
 <!-- References and links -->
