@@ -29,22 +29,29 @@ cclyzer:
 ---
 
 <div class="container-fluid">
+
   <!-- ========== ABOUT ME SECTION ========== -->
   <div class="row sect">
     <div id="about" class="{{ page.width | join: ' ' }}">
-      <div class="page-header">
-        <h2>
-          ABOUT ME
-        </h2>
+      <div class="col-lg-4 col-md-5 col-sm-12 col-xs-12">
+        <img src="{{ site.baseurl }}/assets/images/photo-square.png"
+             class="img-responsive img-thumbnail pull-left"
+             alt="Personal Photo" width="200">
       </div>
+      <div class="col-lg-8 col-md-7 col-sm-12 col-xs-12">
+        <div class="page-header">
+          <h2>
+            ABOUT ME
+          </h2>
+        </div>
 
-      My name is George Balatsouras. I'm a PhD student at the
-      <a href="http://en.uoa.gr/">University of Athens</a>, in the
-      area of programming languages (static analysis in particular).
-      My supervisor is <a href="http://smaragd.org/">Yannis
-      Smaragdakis</a>.
-
-    </div>   <!-- /#publications -->
+        My name is George Balatsouras. I'm a PhD student at the
+        <a href="http://en.uoa.gr/">University of Athens</a>, in the
+        area of programming languages (static analysis in particular).
+        My supervisor is <a href="http://smaragd.org/">Yannis
+          Smaragdakis</a>.
+      </div>
+    </div>   <!-- /#about -->
   </div> <!-- /.sect -->
 
   <!-- ========== PORTOFOLIO SECTION ========== -->
