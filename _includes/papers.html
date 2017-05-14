@@ -6,8 +6,12 @@
       <!-- Paper Title -->
       {% if paper.url %}
       <a href="{{ paper.url }}">{{ paper.title }}</a>
-      {% else %}
+      {% elsif paper.doi %}
       <a href="{{ paper.doi | prepend:'http://dx.doi.org/' }}">{{ paper.title }}</a>
+      {% elsif paper.pdf_link %}
+      <a href="{{ paper.pdf_link }}">{{ paper.title }}</a>
+      {% else %}
+      {{ paper.title }}
       {% endif %}
       <!-- Toggle Abstract Button -->
       <a class="btn toggle-abstract" data-toggle="collapse"
@@ -34,14 +38,16 @@
         <!-- Conference -->
         <span class="conf">{{ paper.conference }}</span>
         {% elsif paper.journal %}
-        <!-- Conference -->
+        <!-- Journal -->
         <span class="journal">{{ paper.journal }}</span>
+        {% elsif paper.thesis %}
+        <span class="thesis">{{ paper.thesis }}</span>
         {% endif %}
       </span>
     </h3>
-    <p id="abstract{{ forloop.index }}" class="paper-abstract collapse">
+    <div id="abstract{{ forloop.index }}" class="paper-abstract collapse">
       {{ paper.abstract }}
-    </p><!-- /paper-abstract -->
+    </div><!-- /paper-abstract -->
   </div> <!-- /paper -->
   {% endfor %}
 

@@ -1,3 +1,61 @@
+- title: >
+    Recovering Structural Information for Better Static Analysis
+  authors:
+    - George Balatsouras
+  thesis: PhD Thesis
+  pdf_link: /assets/thesis.pdf
+  abstract: |
+    <p>
+    Static analysis aims to achieve an understanding of program
+    behavior, by means of automatic reasoning that requires only the
+    program’s source code and not any actual execution. To reach a
+    truly broad level of program understanding, static analysis
+    techniques need to create an abstraction of memory that covers all
+    possible executions. Such abstract models may quickly degenerate
+    after losing essential structural information about the memory
+    objects they describe, due to the use of specific programming
+    idioms and language features, or because of practical analysis
+    limitations. In many cases, some of the lost memory structure may
+    be retrieved, though it requires complex inference that takes
+    advantage of indirect uses of types. Such recovered structural
+    information may, then, greatly benefit static analysis.
+    </p>
+    <p>
+    This dissertation shows how we can recover structural information,
+    first (i) in the context of C/C++, and next, in the context of
+    higher-level languages without direct memory access, like Java,
+    where we identify two primary causes of losing memory structure:
+    (ii) the use of reflection, and (iii) analysis of partial
+    programs. We show that, in all cases, the recovered structural
+    information greatly benefits static analysis on the program.
+    </p>
+    <p>
+    For C/C++, we introduce a structure-sensitive pointer analysis
+    that refines its abstraction based on type information that it
+    discovers on-the-fly. This analysis is implemented in cclyzer, a
+    static analysis tool for LLVM bitcode. Next, we present techniques
+    that extend a standard Java pointer analysis by building on top of
+    state-of-the-art handling of reflection.  The principle is similar
+    to that of our structure-sensitive analysis for C/C++: track the
+    use of reflective objects, during pointer analysis, to gain
+    important insights on their structure, which can be used to
+    “patch” the handling of reflective operations on the running
+    analysis, in a mutually recursive fashion. Finally, to address the
+    challenge of analyzing partial Java programs in full generality,
+    we define the problem of “program complementation”: given a
+    partial program we seek to provide definitions for its missing
+    parts so that the “complement” satisfies all static and dynamic
+    typing requirements induced by the code under analysis. Es-
+    sentially, complementation aims to recover the structure of
+    phantom types. Apart from discovering missing class members (i.e.,
+    fields and methods), satisfying the subtyping con- straints leads
+    to the formulation of a novel typing problem in the OO context,
+    regarding type hierarchy complementation. We offer algorithms to
+    solve this problem in various in- heritance settings, and
+    implement them in JPhantom, a practical tool for Java bytecode
+    complementation.
+    </p>
+
 - doi: "10.1007/978-3-662-53413-7_5"
   title: >
     Structure-Sensitive Points-To Analysis for C and C++
