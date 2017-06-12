@@ -56,6 +56,24 @@
     complementation.
     </p>
 
+- doi: "10.1145/3088515.3088517"
+  title: >
+    A Datalog Model of Must-Alias Analysis
+  authors:
+    - George Balatsouras
+    - Kostas Ferles
+    - George Kastrinis
+    - Yannis Smaragdakis
+  conference: "SOAP '17"
+  pdf_link: https://www.conference-publishing.com/download.php?Event=PLDIWS17SOAPMAIN&Paper=hJFdevbxEZkm40DeEdaH218Th6OCUl&Version=final
+  abstract: |
+    We give a declarative model of a rich family of must-alias
+    analyses. Our emphasis is on careful and compact modeling,
+    while exposing the key points where the algorithm can adjust
+    its inference power. The model is executable, in the Datalog
+    language, and forms the basis of a full-fledged must-alias
+    analysis of Java bytecode in the DOOP framework.
+
 - doi: "10.1007/978-3-662-53413-7_5"
   title: >
     Structure-Sensitive Points-To Analysis for C and C++
