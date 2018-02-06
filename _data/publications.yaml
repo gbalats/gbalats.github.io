@@ -1,3 +1,32 @@
+- doi: "10.1145/3178372.3179519"
+  title: >
+    An Efficient Data Structure for Must-Alias Analysis
+  authors:
+    - George Kastrinis
+    - George Balatsouras
+    - Kostas Ferles
+    - Nefeli Prokopaki-Kostopoulou
+    - Yannis Smaragdakis
+  conference: "CC '18"
+  pdf_link: https://yanniss.github.io/must-datastruct-cc18.pdf
+  abstract: |
+    A must-alias (or “definite-alias”) analysis computes sets of
+    expressions that are guaranteed to be aliased at a given pro-
+    gram point. The analysis has been shown to have significant
+    practical impact, and it is actively used in popular research
+    frameworks and commercial tools. We present a custom data
+    structure that speeds up must-alias analysis by nearly two
+    orders of magnitude (while computing identical results). The
+    data structure achieves efficiency by encoding multiple alias
+    sets in a single linked structure, and compactly representing
+    the aliasing relations of arbitrarily long expressions. We ex-
+    plore the data structure’s performance in both an imperative
+    and a declarative setting and contrast it extensively with
+    prior techniques. With our approach, must-alias analysis
+    can be performed efficiently, over large Java benchmarks, in
+    under half a minute, making the analysis cost acceptable for
+    most practical uses.
+
 - title: >
     Recovering Structural Information for Better Static Analysis
   authors:
