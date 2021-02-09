@@ -94,7 +94,7 @@
     - George Kastrinis
     - Yannis Smaragdakis
   conference: "SOAP '17"
-  pdf_link: https://www.conference-publishing.com/download.php?Event=PLDIWS17SOAPMAIN&Paper=hJFdevbxEZkm40DeEdaH218Th6OCUl&Version=final
+  pdf_link: https://yanniss.github.io/must-alias-soap17.pdf
   abstract: |
     We give a declarative model of a rich family of must-alias
     analyses. Our emphasis is on careful and compact modeling,
